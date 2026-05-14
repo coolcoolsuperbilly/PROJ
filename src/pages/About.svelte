@@ -1,11 +1,17 @@
 <script>
   import { onMount } from "svelte";
   import { fade } from "svelte/transition";
+  import { teamMembers } from "../../public/data.js";
 
   onMount(() => {
     if (window.ScrollReveal) window.ScrollReveal().sync();
   });
 </script>
+
+<svelte:head>
+  <title>About Us - Where Next</title>
+  <meta name="description" content="Meet the team behind Where Next, your trusted partner for extraordinary travel experiences across incredible India." />
+</svelte:head>
 
 <section class="explore-hero" in:fade={{ duration: 600 }}>
   <img
@@ -15,7 +21,7 @@
   />
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <h1 style="padding-top: 15%;">About Us</h1>
+    <h1 class="hero-title" style="padding-top: 15%;">About Us</h1>
     <p class="hero-label">The team behind Where Next</p>
   </div>
 </section>
@@ -31,10 +37,8 @@
       </p>
     </div>
 
-    <div
-      style="display: flex; flex-wrap: wrap; justify-content: center; gap: 40px; margin-top: 50px;"
-    >
-      {#each [{ name: "Aarav Sharma", role: "Lead Developer", img: "https://i.pravatar.cc/150?img=11" }, { name: "Priya Patel", role: "Frontend Engineer", img: "https://i.pravatar.cc/150?img=5" }, { name: "Rohan Verma", role: "Backend Developer", img: "https://i.pravatar.cc/150?img=13" }, { name: "Neha Singh", role: "UI/UX Designer", img: "https://i.pravatar.cc/150?img=9" }, { name: "Vikram Reddy", role: "Full Stack Developer", img: "https://i.pravatar.cc/150?img=15" }] as member}
+    <div class="team-grid" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 40px; margin-top: 50px;">
+      {#each teamMembers as member}
         <div class="team-member" style="text-align: center; width: 200px;">
           <img
             src={member.img}

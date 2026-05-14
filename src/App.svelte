@@ -40,6 +40,7 @@
       const url = new URL(a.href);
       if (url.origin !== window.location.origin) return;
       if (url.hash && normalizePath(url.pathname) === currentPath) return; // same-page hash scroll
+      if (url.hash) navigate(url.pathname + url.hash);
 
       // Internal page link — navigate client-side
       if (
@@ -54,7 +55,7 @@
         ].includes(normalizePath(url.pathname))
       ) {
         e.preventDefault();
-        navigate(url.pathname);
+        navigate(url.pathname + url.hash);
       }
     });
   });
@@ -70,7 +71,19 @@
     !isLogin && !isExplore && !isAbout && !isContact && !isPrivacy && !isTerms;
 
   // Active nav link
-  $: activeNav = isExplore ? "explore" : isAbout ? "about" : isContact ? "contact" : isPrivacy ? "privacy" : isTerms ? "terms" : isHome ? "home" : "";
+  $: activeNav = isExplore
+    ? "explore"
+    : isAbout
+      ? "about"
+      : isContact
+        ? "contact"
+        : isPrivacy
+          ? "privacy"
+          : isTerms
+            ? "terms"
+            : isHome
+              ? "home"
+              : "";
 
   // Navbar scroll state
   let scrolled = false;
@@ -112,10 +125,18 @@
         </li>
         <li><a href="/#destinations" on:click={closeMenu}>Destinations</a></li>
         <li>
-          <a href="/about" class:active={activeNav === "about"} on:click={closeMenu}>About Us</a>
+          <a
+            href="/about"
+            class:active={activeNav === "about"}
+            on:click={closeMenu}>About Us</a
+          >
         </li>
         <li>
-          <a href="/contact" class:active={activeNav === "contact"} on:click={closeMenu}>Contact</a>
+          <a
+            href="/contact"
+            class:active={activeNav === "contact"}
+            on:click={closeMenu}>Contact</a
+          >
         </li>
       </ul>
       <div class="nav-right">
@@ -160,12 +181,6 @@
             Your trusted partner for extraordinary travel experiences across
             incredible India. Let us take you places.
           </p>
-          <div class="footer-social">
-            <a href="#"><i class="ri-instagram-line"></i></a>
-            <a href="#"><i class="ri-twitter-x-line"></i></a>
-            <a href="#"><i class="ri-facebook-fill"></i></a>
-            <a href="#"><i class="ri-youtube-line"></i></a>
-          </div>
         </div>
         <div>
           <h4>Company</h4>

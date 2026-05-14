@@ -1,7 +1,7 @@
 <script>
   import { onMount, onDestroy } from "svelte";
   import { fade } from "svelte/transition";
-  import { packagesData } from "../../public/data.js";
+  import { packagesData, topDestinations, galleryImages, testimonials } from "../../public/data.js";
 
   let triggers = [];
 
@@ -388,58 +388,21 @@
       </p>
     </div>
     <div class="dest-grid" data-stagger>
-      <div class="dest-card">
-        <img
-          src="https://images.unsplash.com/photo-1599661046289-e31897846e41?w=600&q=80"
-          alt="Jaipur"
-          loading="lazy"
-        />
-        <div class="dest-card-overlay"></div>
-        <div class="dest-card-info">
-          <div class="dest-card-rating"><i class="ri-star-fill"></i> 4.9</div>
-          <h3>Jaipur, Rajasthan</h3>
-          <p>Palaces, forts & vibrant bazaars</p>
+      {#each topDestinations as dest}
+        <div class="dest-card">
+          <img
+            src={dest.img}
+            alt={dest.alt}
+            loading="lazy"
+          />
+          <div class="dest-card-overlay"></div>
+          <div class="dest-card-info">
+            <div class="dest-card-rating"><i class="ri-star-fill"></i> {dest.rating}</div>
+            <h3>{dest.title}</h3>
+            <p>{dest.desc}</p>
+          </div>
         </div>
-      </div>
-      <div class="dest-card">
-        <img
-          src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=600&q=80"
-          alt="Goa"
-          loading="lazy"
-        />
-        <div class="dest-card-overlay"></div>
-        <div class="dest-card-info">
-          <div class="dest-card-rating"><i class="ri-star-fill"></i> 4.8</div>
-          <h3>Goa</h3>
-          <p>Golden beaches & vibrant nightlife</p>
-        </div>
-      </div>
-      <div class="dest-card">
-        <img
-          src="https://images.unsplash.com/photo-1561361513-2d000a50f0dc?w=600&q=80"
-          alt="Varanasi"
-          loading="lazy"
-        />
-        <div class="dest-card-overlay"></div>
-        <div class="dest-card-info">
-          <div class="dest-card-rating"><i class="ri-star-fill"></i> 4.9</div>
-          <h3>Varanasi, Uttar Pradesh</h3>
-          <p>Ghats, spirituality & ancient culture</p>
-        </div>
-      </div>
-      <div class="dest-card">
-        <img
-          src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=600&q=80"
-          alt="Kerala"
-          loading="lazy"
-        />
-        <div class="dest-card-overlay"></div>
-        <div class="dest-card-info">
-          <div class="dest-card-rating"><i class="ri-star-fill"></i> 4.7</div>
-          <h3>Kochi, Kerala</h3>
-          <p>Backwaters, spices & lush greenery</p>
-        </div>
-      </div>
+      {/each}
     </div>
   </div>
 </section>
@@ -502,62 +465,15 @@
       </p>
     </div>
     <div class="gallery-grid" data-stagger>
-      <div class="gallery-item g-tall">
-        <img
-          src="https://images.unsplash.com/photo-1477587458883-47145ed94245?w=600&q=80"
-          alt="Himalayas"
-          loading="lazy"
-        />
-      </div>
-      <div class="gallery-item g-wide">
-        <img
-          src="https://images.unsplash.com/photo-1564507592333-c60657eea523?w=800&q=80"
-          alt="Taj Mahal"
-          loading="lazy"
-        />
-      </div>
-      <div class="gallery-item">
-        <img
-          src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=400&q=80"
-          alt="Kerala Backwaters"
-          loading="lazy"
-        />
-      </div>
-      <div class="gallery-item">
-        <img
-          src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=400&q=80"
-          alt="India Gate"
-          loading="lazy"
-        />
-      </div>
-      <div class="gallery-item g-wide">
-        <img
-          src="https://images.unsplash.com/photo-1599661046289-e31897846e41?w=800&q=80"
-          alt="Hawa Mahal Jaipur"
-          loading="lazy"
-        />
-      </div>
-      <div class="gallery-item g-tall">
-        <img
-          src="https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=600&q=80"
-          alt="Ladakh Mountains"
-          loading="lazy"
-        />
-      </div>
-      <div class="gallery-item">
-        <img
-          src="https://images.unsplash.com/photo-1561361513-2d000a50f0dc?w=400&q=80"
-          alt="Varanasi Ghats"
-          loading="lazy"
-        />
-      </div>
-      <div class="gallery-item">
-        <img
-          src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=400&q=80"
-          alt="Goa Beach"
-          loading="lazy"
-        />
-      </div>
+      {#each galleryImages as img}
+        <div class="gallery-item {img.class}">
+          <img
+            src={img.src}
+            alt={img.alt}
+            loading="lazy"
+          />
+        </div>
+      {/each}
     </div>
   </div>
 </section>
@@ -574,102 +490,34 @@
     </div>
     <div class="swiper testimonials-swiper">
       <div class="swiper-wrapper">
-        <div class="swiper-slide">
-          <div class="testimonial-card">
-            <div class="testimonial-stars">
-              <i class="ri-star-fill"></i><i class="ri-star-fill"></i><i
-                class="ri-star-fill"
-              ></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i>
-            </div>
-            <p class="testimonial-text">
-              "Our Rajasthan trip was absolutely magical. Every palace, fort,
-              and sunset was planned to perfection."
-            </p>
-            <div class="testimonial-author">
-              <img
-                class="testimonial-avatar"
-                src="https://i.pravatar.cc/100?img=32"
-                alt="Ananya"
-              />
-              <div>
-                <div class="testimonial-name">Ananya Iyer</div>
-                <div class="testimonial-role">Jaipur & Udaipur, 2025</div>
+        {#each testimonials as t}
+          <div class="swiper-slide">
+            <div class="testimonial-card">
+              <div class="testimonial-stars">
+                {#each Array.from({ length: Math.floor(t.rating) }) as _}
+                  <i class="ri-star-fill"></i>
+                {/each}
+                {#if t.rating % 1 !== 0}
+                  <i class="ri-star-half-fill"></i>
+                {/if}
+              </div>
+              <p class="testimonial-text">
+                {t.text}
+              </p>
+              <div class="testimonial-author">
+                <img
+                  class="testimonial-avatar"
+                  src={t.authorImg}
+                  alt={t.authorName}
+                />
+                <div>
+                  <div class="testimonial-name">{t.authorName}</div>
+                  <div class="testimonial-role">{t.authorRole}</div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="swiper-slide">
-          <div class="testimonial-card">
-            <div class="testimonial-stars">
-              <i class="ri-star-fill"></i><i class="ri-star-fill"></i><i
-                class="ri-star-fill"
-              ></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i>
-            </div>
-            <p class="testimonial-text">
-              "The Ladakh expedition exceeded every expectation. Breathtaking
-              passes and world class service."
-            </p>
-            <div class="testimonial-author">
-              <img
-                class="testimonial-avatar"
-                src="https://i.pravatar.cc/100?img=12"
-                alt="Rohan"
-              />
-              <div>
-                <div class="testimonial-name">Rohan Mehra</div>
-                <div class="testimonial-role">Leh-Ladakh, 2025</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="swiper-slide">
-          <div class="testimonial-card">
-            <div class="testimonial-stars">
-              <i class="ri-star-fill"></i><i class="ri-star-fill"></i><i
-                class="ri-star-fill"
-              ></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i>
-            </div>
-            <p class="testimonial-text">
-              "Best travel service we've ever used for our Kerala houseboat
-              trip. Truly 5-star experience."
-            </p>
-            <div class="testimonial-author">
-              <img
-                class="testimonial-avatar"
-                src="https://i.pravatar.cc/100?img=47"
-                alt="Priya"
-              />
-              <div>
-                <div class="testimonial-name">Priya Sharma</div>
-                <div class="testimonial-role">Kerala, 2026</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="swiper-slide">
-          <div class="testimonial-card">
-            <div class="testimonial-stars">
-              <i class="ri-star-fill"></i><i class="ri-star-fill"></i><i
-                class="ri-star-fill"
-              ></i><i class="ri-star-fill"></i><i class="ri-star-half-fill"></i>
-            </div>
-            <p class="testimonial-text">
-              "Effortless booking, gorgeous Goa itinerary, and memories for a
-              lifetime."
-            </p>
-            <div class="testimonial-author">
-              <img
-                class="testimonial-avatar"
-                src="https://i.pravatar.cc/100?img=68"
-                alt="Vikram"
-              />
-              <div>
-                <div class="testimonial-name">Vikram Desai</div>
-                <div class="testimonial-role">Goa, 2025</div>
-              </div>
-            </div>
-          </div>
-        </div>
+        {/each}
       </div>
       <div class="swiper-pagination"></div>
     </div>

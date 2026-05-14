@@ -1,6 +1,7 @@
 <script>
   import { onMount, onDestroy } from "svelte";
   import { fade } from "svelte/transition";
+  import { explorePackages, trendingDestinations } from "../../public/data.js";
 
   let activeFilter = "All";
   function setFilter(f) {
@@ -43,7 +44,7 @@
 
   // API Integration
   let searchQuery = "";
-  let searchBudget = 5000;
+  let searchBudget = 50000;
   let isSearching = false;
   let searchResults = null;
   let errorMsg = "";
@@ -127,8 +128,8 @@
       <input
         type="number"
         bind:value={searchBudget}
-        placeholder="Budget ($)"
-        min="100"
+        placeholder="Budget (₹)"
+        min="5000"
         style="flex:1; border-left: 1px solid rgba(255,255,255,0.1);"
         required
       />
@@ -181,7 +182,7 @@
           </h2>
           <p class="ai-pkg-meta">
             {searchResults.locations.length} Destinations • Budget:
-            <strong>${searchResults.total_cost}</strong>
+            <strong>₹{searchResults.total_cost}</strong>
           </p>
           <div class="ai-pkg-tags">
             {#each searchResults.locations as loc}
@@ -222,7 +223,7 @@
         <h2 class="section-title">Popular Packages</h2>
       </div>
       <div class="explore-grid" data-stagger>
-        {#each [{ img: "photo-1512343879784-a960bf40e7f2", name: "Goa Beach Retreat", days: 5, loc: "Goa", rating: 4.9, price: "₹18,999", badge: "Best Seller" }, { img: "photo-1626621341517-bbf3d9990a23", name: "Leh-Ladakh Expedition", days: 7, loc: "Ladakh", rating: 4.8, price: "₹32,499", badge: "Popular" }, { img: "photo-1599661046289-e31897846e41", name: "Rajasthan Heritage Tour", days: 6, loc: "Rajasthan", rating: 4.7, price: "₹24,999", badge: "New" }, { img: "photo-1564507592333-c60657eea523", name: "Taj Mahal & Agra Discovery", days: 4, loc: "Agra", rating: 4.9, price: "₹12,999", badge: "" }, { img: "photo-1602216056096-3b40cc0c9944", name: "Kerala Backwater Bliss", days: 8, loc: "Kerala", rating: 4.8, price: "₹21,499", badge: "Trending" }, { img: "photo-1477587458883-47145ed94245", name: "Himalayan Adventure Trek", days: 10, loc: "Himachal Pradesh", rating: 4.9, price: "₹28,999", badge: "" }] as pkg}
+        {#each explorePackages as pkg}
           <div class="pkg-card">
             <div class="pkg-card-img">
               <img
@@ -265,7 +266,7 @@
       <h2 class="section-title">Trending Destinations</h2>
     </div>
     <div class="trending-grid" data-stagger>
-      {#each [{ img: "photo-1602216056096-3b40cc0c9944", name: "Munnar", price: "₹14,999" }, { img: "photo-1599661046289-e31897846e41", name: "Udaipur", price: "₹16,499" }, { img: "photo-1477587458883-47145ed94245", name: "Rishikesh", price: "₹11,999" }] as t}
+      {#each trendingDestinations as t}
         <div class="trending-card">
           <img
             src="https://images.unsplash.com/{t.img}?w=600&q=80"
@@ -310,7 +311,7 @@
       >
       <div class="tl-header">
         <h2>Your AI Journey</h2>
-        <div class="tl-cost">Total: ${timelineData.total_cost}</div>
+        <div class="tl-cost">Total: ₹{timelineData.total_cost}</div>
       </div>
       <div class="tl-body">
         {#each timelineData.locations as loc, i}
@@ -333,7 +334,7 @@
                 <div class="tl-details">
                   <div>
                     <strong><i class="ri-hotel-line"></i> Stay:</strong>
-                    {loc.stay?.name || "Hotel"} (${loc.stay?.price || 0}/night)
+                    {loc.stay?.name || "Hotel"} (₹{loc.stay?.price || 0}/night)
                     <span
                       class="api-rating"
                       style="display:inline-flex;margin-left:6px;"
@@ -360,7 +361,7 @@
                 <div class="tl-travel">
                   <i class="ri-route-line"></i>
                   {timelineData.travel[i].from} → {timelineData.travel[i].to} via
-                  {timelineData.travel[i].type} (${timelineData.travel[i]
+                  {timelineData.travel[i].type} (₹{timelineData.travel[i]
                     .price}, {timelineData.travel[i].duration})
                 </div>
               {/if}
