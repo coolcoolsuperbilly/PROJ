@@ -79,7 +79,7 @@
         .split(",")
         .map((s) => s.trim())
         .filter(Boolean);
-      const res = await fetch("https://tripadvisorjsonapi.val.run/", {
+      const res = await fetch("https://api.466marys.workers.dev/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ locations, budget: searchBudget }),
@@ -103,13 +103,13 @@
 <section class="explore-hero">
   <img
     class="explore-hero-bg"
-    src="https://images.unsplash.com/photo-1488085061387-422e29b40080?w=1920&q=80"
-    alt="Hot air balloons"
+    src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1920&q=80"
+    alt="India Gate at sunset"
   />
   <div class="hero-overlay"></div>
   <div class="hero-content">
+    <h1 style="padding-top: 15%;">Create Your Own Tour Packages</h1>
     <p class="hero-label">AI-Powered Trip Planner</p>
-    <h1>Explore Packages</h1>
     <p
       style="color:rgba(255,255,255,.7); margin-bottom: 24px; font-size: 0.95rem;"
     >
@@ -222,7 +222,7 @@
         <h2 class="section-title">Popular Packages</h2>
       </div>
       <div class="explore-grid" data-stagger>
-        {#each [{ img: "photo-1507525428034-b723cf961d3e", name: "Maldives Luxury Escape", days: 5, loc: "Maldives", rating: 4.9, price: "$2,499", badge: "Best Seller" }, { img: "photo-1476514525535-07fb3b4ae5f1", name: "Swiss Alps Adventure", days: 7, loc: "Switzerland", rating: 4.8, price: "$3,199", badge: "Popular" }, { img: "photo-1530789253388-582c481c54b0", name: "Greek Islands Tour", days: 6, loc: "Greece", rating: 4.7, price: "$1,899", badge: "New" }, { img: "photo-1502602898657-3e91760cbb34", name: "Romantic Paris Getaway", days: 4, loc: "France", rating: 4.9, price: "$1,599", badge: "" }, { img: "photo-1537996194471-e657df975ab4", name: "Bali Cultural Journey", days: 8, loc: "Indonesia", rating: 4.8, price: "$1,299", badge: "Trending" }, { img: "photo-1504280390367-361c6d9f38f4", name: "African Safari Expedition", days: 10, loc: "Kenya", rating: 4.9, price: "$4,299", badge: "" }] as pkg}
+        {#each [{ img: "photo-1512343879784-a960bf40e7f2", name: "Goa Beach Retreat", days: 5, loc: "Goa", rating: 4.9, price: "₹18,999", badge: "Best Seller" }, { img: "photo-1626621341517-bbf3d9990a23", name: "Leh-Ladakh Expedition", days: 7, loc: "Ladakh", rating: 4.8, price: "₹32,499", badge: "Popular" }, { img: "photo-1599661046289-e31897846e41", name: "Rajasthan Heritage Tour", days: 6, loc: "Rajasthan", rating: 4.7, price: "₹24,999", badge: "New" }, { img: "photo-1564507592333-c60657eea523", name: "Taj Mahal & Agra Discovery", days: 4, loc: "Agra", rating: 4.9, price: "₹12,999", badge: "" }, { img: "photo-1602216056096-3b40cc0c9944", name: "Kerala Backwater Bliss", days: 8, loc: "Kerala", rating: 4.8, price: "₹21,499", badge: "Trending" }, { img: "photo-1477587458883-47145ed94245", name: "Himalayan Adventure Trek", days: 10, loc: "Himachal Pradesh", rating: 4.9, price: "₹28,999", badge: "" }] as pkg}
           <div class="pkg-card">
             <div class="pkg-card-img">
               <img
@@ -265,7 +265,7 @@
       <h2 class="section-title">Trending Destinations</h2>
     </div>
     <div class="trending-grid" data-stagger>
-      {#each [{ img: "photo-1516483638261-f4dbaf036963", name: "Amalfi Coast", price: "$1,899" }, { img: "photo-1523906834658-6e24ef2386f9", name: "Venice", price: "$1,499" }, { img: "photo-1469474968028-56623f02e42e", name: "Norwegian Fjords", price: "$2,799" }] as t}
+      {#each [{ img: "photo-1602216056096-3b40cc0c9944", name: "Munnar", price: "₹14,999" }, { img: "photo-1599661046289-e31897846e41", name: "Udaipur", price: "₹16,499" }, { img: "photo-1477587458883-47145ed94245", name: "Rishikesh", price: "₹11,999" }] as t}
         <div class="trending-card">
           <img
             src="https://images.unsplash.com/{t.img}?w=600&q=80"
@@ -288,8 +288,11 @@
   <div class="container">
     <div class="cta-section" data-reveal>
       <div class="section-label">Ready?</div>
-      <h2>Start Planning Your Dream Trip</h2>
-      <p>Join 12,000+ travelers who've discovered the world with Where Next.</p>
+      <h2>Start Planning Your Dream India Trip</h2>
+      <p>
+        Join 12,000+ travelers who've discovered incredible India with Where
+        Next.
+      </p>
       <a href="/login" class="btn btn-primary"
         >Get Started <i class="ri-arrow-right-line"></i></a
       >

@@ -1096,7 +1096,7 @@ h5 {
 
 /* ═══ EXPLORE PAGE ═══ */
 .explore-hero {
-  height: 50vh;
+  padding: 5%;
   min-height: 360px;
   display: flex;
   align-items: center;

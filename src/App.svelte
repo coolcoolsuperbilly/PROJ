@@ -4,6 +4,10 @@
   import Home from "./pages/Home.svelte";
   import Explore from "./pages/Explore.svelte";
   import Login from "./pages/Login.svelte";
+  import About from "./pages/About.svelte";
+  import Contact from "./pages/Contact.svelte";
+  import Privacy from "./pages/Privacy.svelte";
+  import Terms from "./pages/Terms.svelte";
 
   let currentPath = window.location.pathname;
 
@@ -38,7 +42,17 @@
       if (url.hash && normalizePath(url.pathname) === currentPath) return; // same-page hash scroll
 
       // Internal page link — navigate client-side
-      if (["/explore", "/login", "/"].includes(normalizePath(url.pathname))) {
+      if (
+        [
+          "/explore",
+          "/login",
+          "/",
+          "/about",
+          "/contact",
+          "/privacy",
+          "/terms",
+        ].includes(normalizePath(url.pathname))
+      ) {
         e.preventDefault();
         navigate(url.pathname);
       }
@@ -48,10 +62,15 @@
   // Determine which page to show
   $: isLogin = currentPath === "/login";
   $: isExplore = currentPath === "/explore";
-  $: isHome = !isLogin && !isExplore;
+  $: isAbout = currentPath === "/about";
+  $: isContact = currentPath === "/contact";
+  $: isPrivacy = currentPath === "/privacy";
+  $: isTerms = currentPath === "/terms";
+  $: isHome =
+    !isLogin && !isExplore && !isAbout && !isContact && !isPrivacy && !isTerms;
 
   // Active nav link
-  $: activeNav = isExplore ? "explore" : isHome ? "home" : "";
+  $: activeNav = isExplore ? "explore" : isAbout ? "about" : isContact ? "contact" : isPrivacy ? "privacy" : isTerms ? "terms" : isHome ? "home" : "";
 
   // Navbar scroll state
   let scrolled = false;
@@ -92,7 +111,12 @@
           >
         </li>
         <li><a href="/#destinations" on:click={closeMenu}>Destinations</a></li>
-        <li><a href="/#gallery" on:click={closeMenu}>Gallery</a></li>
+        <li>
+          <a href="/about" class:active={activeNav === "about"} on:click={closeMenu}>About Us</a>
+        </li>
+        <li>
+          <a href="/contact" class:active={activeNav === "contact"} on:click={closeMenu}>Contact</a>
+        </li>
       </ul>
       <div class="nav-right">
         <a href="/login" class="nav-cta">Sign In</a>
@@ -111,6 +135,14 @@
       <Login />
     {:else if isExplore}
       <Explore />
+    {:else if isAbout}
+      <About />
+    {:else if isContact}
+      <Contact />
+    {:else if isPrivacy}
+      <Privacy />
+    {:else if isTerms}
+      <Terms />
     {:else}
       <Home />
     {/if}
@@ -125,8 +157,8 @@
         <div class="footer-brand">
           <a href="/" class="logo">where<span>next</span></a>
           <p>
-            Your trusted partner for extraordinary travel experiences around the
-            globe. Let us take you places.
+            Your trusted partner for extraordinary travel experiences across
+            incredible India. Let us take you places.
           </p>
           <div class="footer-social">
             <a href="#"><i class="ri-instagram-line"></i></a>
@@ -138,28 +170,24 @@
         <div>
           <h4>Company</h4>
           <ul class="footer-links">
-            <li><a href="#">About Us</a></li>
-            <li><a href="#">Careers</a></li>
-            <li><a href="#">Press</a></li>
-            <li><a href="#">Blog</a></li>
+            <li><a href="/about">About Us</a></li>
+            <li><a href="/explore">Explore</a></li>
+            <li><a href="/destinations">Destinations</a></li>
           </ul>
         </div>
         <div>
           <h4>Support</h4>
           <ul class="footer-links">
-            <li><a href="#">Help Center</a></li>
-            <li><a href="#">Contact Us</a></li>
-            <li><a href="#">Cancellation</a></li>
-            <li><a href="#">Safety</a></li>
+            <li><a href="/contact">Contact Us</a></li>
+            <li><a href="https://www.instagram.com/wherenext">Instagram</a></li>
+            <li><a href="https://www.youtube.com/@wherenext">YouTube</a></li>
           </ul>
         </div>
         <div>
           <h4>Legal</h4>
           <ul class="footer-links">
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Terms of Service</a></li>
-            <li><a href="#">Cookie Policy</a></li>
-            <li><a href="#">Sitemap</a></li>
+            <li><a href="/privacy">Privacy Policy</a></li>
+            <li><a href="/terms">Terms of Service</a></li>
           </ul>
         </div>
       </div>

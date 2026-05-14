@@ -1,30 +1,31 @@
 <script>
   import { onMount, onDestroy } from "svelte";
   import { fade } from "svelte/transition";
+  import { packagesData } from "../../public/data.js";
 
   let triggers = [];
 
   // ── Video Slideshow ──
   const heroVideos = [
     {
-      src: "https://videos.pexels.com/video-files/1409899/1409899-uhd_2560_1440_25fps.mp4",
+      src: "https://videos.pexels.com/video-files/4316120/4316120-uhd_2560_1440_25fps.mp4",
       poster:
-        "https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=1920&q=80",
+        "https://images.unsplash.com/photo-1564507592333-c60657eea523?w=1920&q=80",
     },
     {
-      src: "https://videos.pexels.com/video-files/3571264/3571264-uhd_2560_1440_30fps.mp4",
+      src: "https://videos.pexels.com/video-files/4316236/4316236-uhd_2560_1440_25fps.mp4",
       poster:
-        "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1920&q=80",
+        "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1920&q=80",
     },
     {
-      src: "https://videos.pexels.com/video-files/856973/856973-hd_1920_1080_30fps.mp4",
+      src: "https://videos.pexels.com/video-files/3629536/3629536-hd_1920_1080_30fps.mp4",
       poster:
-        "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=1920&q=80",
+        "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=1920&q=80",
     },
     {
-      src: "https://videos.pexels.com/video-files/2169880/2169880-uhd_2560_1440_30fps.mp4",
+      src: "https://videos.pexels.com/video-files/4315829/4315829-uhd_2560_1440_25fps.mp4",
       poster:
-        "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1920&q=80",
+        "https://images.unsplash.com/photo-1477587458883-47145ed94245?w=1920&q=80",
     },
   ];
 
@@ -67,9 +68,35 @@
     slideTimer = setTimeout(advanceSlide, SLIDE_DURATION);
   }
 
+  const spiralImages = [
+    'https://images.unsplash.com/photo-1564507592333-c60657eea523?w=800&q=80',
+    'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=800&q=80',
+    'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=800&q=80',
+    'https://images.unsplash.com/photo-1599661046289-e31897846e41?w=800&q=80',
+    'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=800&q=80',
+    'https://images.unsplash.com/photo-1561361513-2d000a50f0dc?w=800&q=80',
+    'https://images.unsplash.com/photo-1477587458883-47145ed94245?w=800&q=80',
+    'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=800&q=80',
+    'https://images.unsplash.com/photo-1587478640398-0f2c40c1ceba?w=800&q=80',
+    'https://images.unsplash.com/photo-1514222785106-a8f81536b335?w=800&q=80',
+    'https://images.unsplash.com/photo-1598144249156-f6d3cb20c6a2?w=800&q=80',
+    'https://images.unsplash.com/photo-1590050720235-9dfa86df74f3?w=800&q=80',
+    'https://images.unsplash.com/photo-1600100397608-f010f411c569?w=800&q=80',
+    'https://images.unsplash.com/photo-1571536802807-30451e3955d8?w=800&q=80',
+    'https://images.unsplash.com/photo-1582502693992-ce8474dc25ea?w=800&q=80',
+    'https://images.unsplash.com/photo-1625062402283-9bfa0efd5d21?w=800&q=80',
+    'https://images.unsplash.com/photo-1546875567-27e16a241203?w=800&q=80',
+    'https://images.unsplash.com/photo-1627806509506-6966f3640b8a?w=800&q=80',
+    'https://images.unsplash.com/photo-1598285519890-eec1a4cb99bb?w=800&q=80',
+    'https://images.unsplash.com/photo-1525642838382-b7e51cdeafc7?w=800&q=80',
+    'https://images.unsplash.com/photo-1592652431713-39906d4eeb5c?w=800&q=80',
+    'https://images.unsplash.com/photo-1550231573-0f04fba222bb?w=800&q=80',
+    'https://images.unsplash.com/photo-1568297779-7bd7d1fdf261?w=800&q=80'
+  ];
+
   onMount(() => {
     // Initialize spiral
-    if (window.initSpiral) window.initSpiral();
+    if (window.initSpiral) window.initSpiral(spiralImages);
 
     // Start video slideshow
     if (videoRefs[0]) videoRefs[0].play().catch(() => {});
@@ -247,11 +274,11 @@
   <div class="hero-overlay"></div>
 
   <div class="hero-content">
-    <p class="hero-label">Travel beyond the ordinary</p>
+    <p class="hero-label">Explore Incredible India</p>
     <h1>Where<em>Next?</em></h1>
     <p class="hero-subtitle">
-      Handpicked destinations, expert-crafted itineraries, and unforgettable
-      moments — all in one place.
+      From the Taj Mahal to Kerala's backwaters, discover handpicked
+      destinations and unforgettable experiences across India.
     </p>
     <div class="hero-btns">
       <a href="#spiral" class="btn btn-primary"
@@ -300,11 +327,11 @@
       style="background:rgba(0,0,0,0.3);box-shadow:0px 0px 10px 10px rgba(0,0,0,0.3);border-radius:5px;"
       data-reveal
     >
-      <div class="section-label">Explore Immersive Experiences</div>
-      <h2 class="section-title">Discover Endless<br />Horizons</h2>
+      <div class="section-label">Explore Incredible India</div>
+      <h2 class="section-title">Discover Endless<br />Wonders</h2>
       <p style="color: var(--text-muted);line-height: 1.8;">
-        Spin the globe and uncover breathtaking<br /> destinations that wait for
-        you.
+        Spin through India's breathtaking landscapes<br /> — from Himalayan peaks
+        to tropical shores.
       </p>
     </div>
   </div>
@@ -313,19 +340,17 @@
 <!-- Marquee -->
 <div class="marquee">
   <div class="marquee-track">
-    <span>Bali</span><span>Santorini</span><span>Paris</span><span
-      >Maldives</span
-    ><span>Tokyo</span><span>Iceland</span><span>Amalfi Coast</span><span
-      >Patagonia</span
-    ><span>Swiss Alps</span><span>Kyoto</span><span>Venice</span><span
-      >New Zealand</span
+    <span>Jaipur</span><span>Goa</span><span>Kerala</span><span>Leh-Ladakh</span
+    ><span>Varanasi</span><span>Munnar</span><span>Udaipur</span><span
+      >Rishikesh</span
+    ><span>Andaman</span><span>Hampi</span><span>Darjeeling</span><span
+      >Agra</span
     >
-    <span>Bali</span><span>Santorini</span><span>Paris</span><span
-      >Maldives</span
-    ><span>Tokyo</span><span>Iceland</span><span>Amalfi Coast</span><span
-      >Patagonia</span
-    ><span>Swiss Alps</span><span>Kyoto</span><span>Venice</span><span
-      >New Zealand</span
+    <span>Jaipur</span><span>Goa</span><span>Kerala</span><span>Leh-Ladakh</span
+    ><span>Varanasi</span><span>Munnar</span><span>Udaipur</span><span
+      >Rishikesh</span
+    ><span>Andaman</span><span>Hampi</span><span>Darjeeling</span><span
+      >Agra</span
     >
   </div>
 </div>
@@ -359,61 +384,60 @@
       <div class="section-label">Top Picks</div>
       <h2 class="section-title">Stunning Destinations</h2>
       <p class="section-subtitle">
-        Explore our handpicked collection of the world's most awe-inspiring
-        places.
+        Explore our handpicked collection of India's most awe-inspiring places.
       </p>
     </div>
     <div class="dest-grid" data-stagger>
       <div class="dest-card">
         <img
-          src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&q=80"
-          alt="Bali"
+          src="https://images.unsplash.com/photo-1599661046289-e31897846e41?w=600&q=80"
+          alt="Jaipur"
           loading="lazy"
         />
         <div class="dest-card-overlay"></div>
         <div class="dest-card-info">
           <div class="dest-card-rating"><i class="ri-star-fill"></i> 4.9</div>
-          <h3>Bali, Indonesia</h3>
-          <p>Temples, rice terraces & beaches</p>
+          <h3>Jaipur, Rajasthan</h3>
+          <p>Palaces, forts & vibrant bazaars</p>
         </div>
       </div>
       <div class="dest-card">
         <img
-          src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=600&q=80"
-          alt="Amalfi"
+          src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=600&q=80"
+          alt="Goa"
           loading="lazy"
         />
         <div class="dest-card-overlay"></div>
         <div class="dest-card-info">
           <div class="dest-card-rating"><i class="ri-star-fill"></i> 4.8</div>
-          <h3>Amalfi Coast, Italy</h3>
-          <p>Cliffside villages & azure waters</p>
+          <h3>Goa</h3>
+          <p>Golden beaches & vibrant nightlife</p>
         </div>
       </div>
       <div class="dest-card">
         <img
-          src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&q=80"
-          alt="Paris"
+          src="https://images.unsplash.com/photo-1561361513-2d000a50f0dc?w=600&q=80"
+          alt="Varanasi"
           loading="lazy"
         />
         <div class="dest-card-overlay"></div>
         <div class="dest-card-info">
           <div class="dest-card-rating"><i class="ri-star-fill"></i> 4.9</div>
-          <h3>Paris, France</h3>
-          <p>Art, culture & culinary delights</p>
+          <h3>Varanasi, Uttar Pradesh</h3>
+          <p>Ghats, spirituality & ancient culture</p>
         </div>
       </div>
       <div class="dest-card">
         <img
-          src="https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=600&q=80"
-          alt="Venice"
+          src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=600&q=80"
+          alt="Kerala"
           loading="lazy"
         />
         <div class="dest-card-overlay"></div>
         <div class="dest-card-info">
           <div class="dest-card-rating"><i class="ri-star-fill"></i> 4.7</div>
-          <h3>Venice, Italy</h3>
-          <p>Canals, gondolas & history</p>
+          <h3>Kochi, Kerala</h3>
+          <p>Backwaters, spices & lush greenery</p>
         </div>
       </div>
     </div>
@@ -430,79 +454,39 @@
         Hand-crafted itineraries designed for unforgettable experiences.
       </p>
     </div>
-    <div class="pkg-grid" data-stagger>
-      <div class="pkg-card">
-        <div class="pkg-card-img">
-          <img
-            src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80"
-            alt="Maldives"
-            loading="lazy"
-          />
-          <div class="pkg-badge">Best Seller</div>
-        </div>
-        <div class="pkg-card-body">
-          <h3>Maldives Luxury Escape</h3>
-          <div class="pkg-meta">
-            <span><i class="ri-time-line"></i> 5 Days</span><span
-              ><i class="ri-map-pin-line"></i> Maldives</span
-            ><span><i class="ri-star-fill"></i> 4.9</span>
+    <div
+      style="display:flex;flex-direction: column;align-items:center;justify-content: center; gap: 15%;"
+      data-stagger
+    >
+      <div class="pkg-grid">
+        {#each packagesData as pkg}
+          <div class="pkg-card">
+            <div class="pkg-card-img">
+              <img src={pkg.image} alt={pkg.alt} loading="lazy" />
+              <div class="pkg-badge">{pkg.badge}</div>
+            </div>
+            <div class="pkg-card-body">
+              <h3>{pkg.title}</h3>
+              <div class="pkg-meta">
+                <span><i class="ri-time-line"></i> {pkg.days} Days</span><span
+                  ><i class="ri-map-pin-line"></i> {pkg.location}</span
+                ><span><i class="ri-star-fill"></i> {pkg.rating}</span>
+              </div>
+              <div class="pkg-price">
+                <span class="amount">{pkg.price}</span><span class="per"
+                  >/ person</span
+                >
+              </div>
+            </div>
           </div>
-          <div class="pkg-price">
-            <span class="amount">$2,499</span><span class="per">/ person</span>
-          </div>
-          <a href="/explore" class="btn btn-primary btn-sm"
-            >View Details <i class="ri-arrow-right-s-line"></i></a
-          >
-        </div>
+        {/each}
       </div>
-      <div class="pkg-card">
-        <div class="pkg-card-img">
-          <img
-            src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80"
-            alt="Alps"
-            loading="lazy"
-          />
-          <div class="pkg-badge">Popular</div>
-        </div>
-        <div class="pkg-card-body">
-          <h3>Swiss Alps Adventure</h3>
-          <div class="pkg-meta">
-            <span><i class="ri-time-line"></i> 7 Days</span><span
-              ><i class="ri-map-pin-line"></i> Switzerland</span
-            ><span><i class="ri-star-fill"></i> 4.8</span>
-          </div>
-          <div class="pkg-price">
-            <span class="amount">$3,199</span><span class="per">/ person</span>
-          </div>
-          <a href="/explore" class="btn btn-primary btn-sm"
-            >View Details <i class="ri-arrow-right-s-line"></i></a
-          >
-        </div>
-      </div>
-      <div class="pkg-card">
-        <div class="pkg-card-img">
-          <img
-            src="https://images.unsplash.com/photo-1530789253388-582c481c54b0?w=600&q=80"
-            alt="Greece"
-            loading="lazy"
-          />
-          <div class="pkg-badge">New</div>
-        </div>
-        <div class="pkg-card-body">
-          <h3>Greek Islands Tour</h3>
-          <div class="pkg-meta">
-            <span><i class="ri-time-line"></i> 6 Days</span><span
-              ><i class="ri-map-pin-line"></i> Greece</span
-            ><span><i class="ri-star-fill"></i> 4.7</span>
-          </div>
-          <div class="pkg-price">
-            <span class="amount">$1,899</span><span class="per">/ person</span>
-          </div>
-          <a href="/explore" class="btn btn-primary btn-sm"
-            >View Details <i class="ri-arrow-right-s-line"></i></a
-          >
-        </div>
-      </div>
+      <a
+        href="/explore"
+        style="margin-top:20px;max-width:max-content;opacity:1 !important;"
+        class="btn btn-primary btn-sm"
+        >Create Your Own Custom Package <i class="ri-arrow-right-s-line"></i></a
+      >
     </div>
   </div>
 </section>
@@ -520,57 +504,57 @@
     <div class="gallery-grid" data-stagger>
       <div class="gallery-item g-tall">
         <img
-          src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600&q=80"
-          alt="Valley"
+          src="https://images.unsplash.com/photo-1477587458883-47145ed94245?w=600&q=80"
+          alt="Himalayas"
           loading="lazy"
         />
       </div>
       <div class="gallery-item g-wide">
         <img
-          src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800&q=80"
-          alt="Mountains"
+          src="https://images.unsplash.com/photo-1564507592333-c60657eea523?w=800&q=80"
+          alt="Taj Mahal"
           loading="lazy"
         />
       </div>
       <div class="gallery-item">
         <img
-          src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=400&q=80"
-          alt="Forest"
+          src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=400&q=80"
+          alt="Kerala Backwaters"
           loading="lazy"
         />
       </div>
       <div class="gallery-item">
         <img
-          src="https://images.unsplash.com/photo-1433838552652-f9a46b332c40?w=400&q=80"
-          alt="Lake"
+          src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=400&q=80"
+          alt="India Gate"
           loading="lazy"
         />
       </div>
       <div class="gallery-item g-wide">
         <img
-          src="https://images.unsplash.com/photo-1488085061387-422e29b40080?w=800&q=80"
-          alt="Balloons"
+          src="https://images.unsplash.com/photo-1599661046289-e31897846e41?w=800&q=80"
+          alt="Hawa Mahal Jaipur"
           loading="lazy"
         />
       </div>
       <div class="gallery-item g-tall">
         <img
-          src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=600&q=80"
-          alt="Camping"
+          src="https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=600&q=80"
+          alt="Ladakh Mountains"
           loading="lazy"
         />
       </div>
       <div class="gallery-item">
         <img
-          src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=400&q=80"
-          alt="Sunset"
+          src="https://images.unsplash.com/photo-1561361513-2d000a50f0dc?w=400&q=80"
+          alt="Varanasi Ghats"
           loading="lazy"
         />
       </div>
       <div class="gallery-item">
         <img
-          src="https://images.unsplash.com/photo-1503220317375-aaad61436b1b?w=400&q=80"
-          alt="Beach"
+          src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=400&q=80"
+          alt="Goa Beach"
           loading="lazy"
         />
       </div>
@@ -598,18 +582,18 @@
               ></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i>
             </div>
             <p class="testimonial-text">
-              "Our Bali trip was absolutely magical. Every detail was planned to
-              perfection."
+              "Our Rajasthan trip was absolutely magical. Every palace, fort,
+              and sunset was planned to perfection."
             </p>
             <div class="testimonial-author">
               <img
                 class="testimonial-avatar"
                 src="https://i.pravatar.cc/100?img=32"
-                alt="Sarah"
+                alt="Ananya"
               />
               <div>
-                <div class="testimonial-name">Sarah Mitchell</div>
-                <div class="testimonial-role">Bali, 2025</div>
+                <div class="testimonial-name">Ananya Iyer</div>
+                <div class="testimonial-role">Jaipur & Udaipur, 2025</div>
               </div>
             </div>
           </div>
@@ -622,18 +606,18 @@
               ></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i>
             </div>
             <p class="testimonial-text">
-              "The Swiss Alps package exceeded every expectation. World class
-              service."
+              "The Ladakh expedition exceeded every expectation. Breathtaking
+              passes and world class service."
             </p>
             <div class="testimonial-author">
               <img
                 class="testimonial-avatar"
                 src="https://i.pravatar.cc/100?img=12"
-                alt="James"
+                alt="Rohan"
               />
               <div>
-                <div class="testimonial-name">James Rodriguez</div>
-                <div class="testimonial-role">Switzerland, 2025</div>
+                <div class="testimonial-name">Rohan Mehra</div>
+                <div class="testimonial-role">Leh-Ladakh, 2025</div>
               </div>
             </div>
           </div>
@@ -646,7 +630,8 @@
               ></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i>
             </div>
             <p class="testimonial-text">
-              "Best travel agency we've ever used. Truly 5-star service."
+              "Best travel service we've ever used for our Kerala houseboat
+              trip. Truly 5-star experience."
             </p>
             <div class="testimonial-author">
               <img
@@ -656,7 +641,7 @@
               />
               <div>
                 <div class="testimonial-name">Priya Sharma</div>
-                <div class="testimonial-role">Maldives, 2026</div>
+                <div class="testimonial-role">Kerala, 2026</div>
               </div>
             </div>
           </div>
@@ -669,18 +654,18 @@
               ></i><i class="ri-star-fill"></i><i class="ri-star-half-fill"></i>
             </div>
             <p class="testimonial-text">
-              "Effortless booking, gorgeous itinerary, and memories for a
+              "Effortless booking, gorgeous Goa itinerary, and memories for a
               lifetime."
             </p>
             <div class="testimonial-author">
               <img
                 class="testimonial-avatar"
                 src="https://i.pravatar.cc/100?img=68"
-                alt="Emma"
+                alt="Vikram"
               />
               <div>
-                <div class="testimonial-name">Emma Chen</div>
-                <div class="testimonial-role">Greece, 2025</div>
+                <div class="testimonial-name">Vikram Desai</div>
+                <div class="testimonial-role">Goa, 2025</div>
               </div>
             </div>
           </div>

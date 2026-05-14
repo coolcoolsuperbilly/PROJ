@@ -35,7 +35,7 @@ window.initSpiral = function () {
   let scrollOffset = 0;
   let imageRatios = [];
   let originalPositions = [];
-  const AUTO_SPEED = 0.00002; // Constant auto-scroll speed
+  const AUTO_SPEED = 0.0003; // Constant auto-scroll speed
 
   // Gentle idle sway
   let time = 0;

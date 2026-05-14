@@ -9,13 +9,13 @@
   <!-- Left: Visual -->
   <div class="login-visual">
     <img
-      src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200&q=80"
-      alt="Mountain sunrise"
+      src="https://images.unsplash.com/photo-1564507592333-c60657eea523?w=1200&q=80"
+      alt="Taj Mahal at sunrise"
     />
     <div class="login-visual-overlay"></div>
     <div class="login-visual-text">
-      <h2>Your next adventure<br />is one click away.</h2>
-      <p>Join 12,000+ travelers exploring the world with Where Next.</p>
+      <h2>Your next Indian<br />adventure awaits.</h2>
+      <p>Join 12,000+ travelers exploring incredible India with Where Next.</p>
     </div>
   </div>
 
