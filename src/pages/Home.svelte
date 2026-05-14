@@ -1,11 +1,79 @@
 <script>
   import { onMount, onDestroy } from "svelte";
+  import { fade } from "svelte/transition";
 
   let triggers = [];
+
+  // ── Video Slideshow ──
+  const heroVideos = [
+    {
+      src: "https://videos.pexels.com/video-files/1409899/1409899-uhd_2560_1440_25fps.mp4",
+      poster:
+        "https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=1920&q=80",
+    },
+    {
+      src: "https://videos.pexels.com/video-files/3571264/3571264-uhd_2560_1440_30fps.mp4",
+      poster:
+        "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1920&q=80",
+    },
+    {
+      src: "https://videos.pexels.com/video-files/856973/856973-hd_1920_1080_30fps.mp4",
+      poster:
+        "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=1920&q=80",
+    },
+    {
+      src: "https://videos.pexels.com/video-files/2169880/2169880-uhd_2560_1440_30fps.mp4",
+      poster:
+        "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1920&q=80",
+    },
+  ];
+
+  let currentSlide = 0;
+  let videoRefs = [];
+  let slideTimer;
+  let progressTimer;
+  let slideProgress = 0;
+  const SLIDE_DURATION = 8000;
+
+  function goToSlide(index) {
+    if (index === currentSlide) return;
+    const prev = currentSlide;
+    currentSlide = index;
+    slideProgress = 0;
+
+    if (videoRefs[currentSlide]) {
+      videoRefs[currentSlide].currentTime = 0;
+      videoRefs[currentSlide].play().catch(() => {});
+    }
+    setTimeout(() => {
+      if (videoRefs[prev]) videoRefs[prev].pause();
+    }, 1600);
+    resetTimer();
+  }
+
+  function advanceSlide() {
+    goToSlide((currentSlide + 1) % heroVideos.length);
+  }
+
+  function resetTimer() {
+    clearTimeout(slideTimer);
+    clearInterval(progressTimer);
+    slideProgress = 0;
+    const step = 50;
+    progressTimer = setInterval(() => {
+      slideProgress += (step / SLIDE_DURATION) * 100;
+      if (slideProgress >= 100) clearInterval(progressTimer);
+    }, step);
+    slideTimer = setTimeout(advanceSlide, SLIDE_DURATION);
+  }
 
   onMount(() => {
     // Initialize spiral
     if (window.initSpiral) window.initSpiral();
+
+    // Start video slideshow
+    if (videoRefs[0]) videoRefs[0].play().catch(() => {});
+    resetTimer();
 
     // Wait a tick for DOM to be ready
     requestAnimationFrame(() => {
@@ -155,45 +223,90 @@
     if (window.destroySpiral) window.destroySpiral();
     if (window.ScrollTrigger)
       window.ScrollTrigger.getAll().forEach((t) => t.kill());
+    clearTimeout(slideTimer);
+    clearInterval(progressTimer);
   });
 </script>
 
-<!-- Hero with Video + Auto-Rolling Spiral -->
+<!-- Hero with Video Slideshow + Auto-Rolling Spiral -->
 <section class="hero" id="hero">
-  <video
-    class="hero-video"
-    autoplay
-    muted
-    loop
-    playsinline
-    poster="https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=1920&q=80"
-  >
-    <source
-      src="https://videos.pexels.com/video-files/1409899/1409899-uhd_2560_1440_25fps.mp4"
-      type="video/mp4"
-    />
-  </video>
-  <div id="webgl-container">
-    <canvas id="webgl-canvas"></canvas>
-  </div>
+  {#each heroVideos as video, i}
+    <video
+      bind:this={videoRefs[i]}
+      class="hero-video"
+      class:hero-video-active={i === currentSlide}
+      muted
+      loop
+      playsinline
+      preload={i === 0 ? "auto" : "metadata"}
+      poster={video.poster}
+    >
+      <source src={video.src} type="video/mp4" />
+    </video>
+  {/each}
   <div class="hero-overlay"></div>
+
   <div class="hero-content">
     <p class="hero-label">Travel beyond the ordinary</p>
-    <h1>Find your<br /><em>next story.</em></h1>
+    <h1>Where<em>Next?</em></h1>
     <p class="hero-subtitle">
       Handpicked destinations, expert-crafted itineraries, and unforgettable
       moments — all in one place.
     </p>
     <div class="hero-btns">
-      <a href="/explore" class="btn btn-primary"
+      <a href="#spiral" class="btn btn-primary"
         >Start Exploring <i class="ri-arrow-right-line"></i></a
       >
-      <a href="#destinations" class="btn btn-ghost">See Destinations</a>
     </div>
   </div>
+
+  <!-- Slide indicators -->
+  <div class="hero-slide-indicators">
+    {#each heroVideos as _, i}
+      <button
+        class="slide-indicator"
+        class:active={i === currentSlide}
+        on:click={() => goToSlide(i)}
+      >
+        {#if i === currentSlide}
+          <span class="slide-indicator-fill" style="width: {slideProgress}%"
+          ></span>
+        {/if}
+      </button>
+    {/each}
+  </div>
+
   <div class="scroll-indicator">
     <span>Scroll</span>
     <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- Spiral Showcase Section -->
+<section
+  id="spiral"
+  class="section section-dark spiral-section"
+  style="position:relative;padding:0px;height: 100vh; overflow: hidden; display: flex; align-items: center;"
+>
+  <div id="webgl-container">
+    <canvas id="webgl-canvas"></canvas>
+  </div>
+  <div
+    class="container"
+    style="right:0px;position:absolute;z-index:2;pointer-events:none;text-align:right;"
+  >
+    <div
+      class="section-header"
+      style="background:rgba(0,0,0,0.3);box-shadow:0px 0px 10px 10px rgba(0,0,0,0.3);border-radius:5px;"
+      data-reveal
+    >
+      <div class="section-label">Explore Immersive Experiences</div>
+      <h2 class="section-title">Discover Endless<br />Horizons</h2>
+      <p style="color: var(--text-muted);line-height: 1.8;">
+        Spin the globe and uncover breathtaking<br /> destinations that wait for
+        you.
+      </p>
+    </div>
   </div>
 </section>
 
@@ -394,48 +507,72 @@
   </div>
 </section>
 
-<!-- Why Choose Us -->
-<section class="section">
+<!-- Gallery -->
+<section class="section" id="gallery">
   <div class="container">
     <div class="section-header" data-reveal>
-      <div class="section-label">Why Us</div>
-      <h2 class="section-title">Why Choose Where Next</h2>
+      <div class="section-label">Moments</div>
+      <h2 class="section-title">Travel Gallery</h2>
       <p class="section-subtitle">
-        We go beyond ordinary to craft journeys that stay with you forever.
+        A glimpse into the extraordinary moments that await you.
       </p>
     </div>
-    <div class="features-grid" data-stagger>
-      <div class="feature-card">
-        <div class="feature-icon"><i class="ri-shield-check-line"></i></div>
-        <h3>100% Trusted</h3>
-        <p>
-          Verified partners, secure payments, and transparent pricing on every
-          booking.
-        </p>
+    <div class="gallery-grid" data-stagger>
+      <div class="gallery-item g-tall">
+        <img
+          src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600&q=80"
+          alt="Valley"
+          loading="lazy"
+        />
       </div>
-      <div class="feature-card">
-        <div class="feature-icon"><i class="ri-hand-heart-line"></i></div>
-        <h3>Curated Experiences</h3>
-        <p>
-          Handpicked itineraries crafted by local experts who know every hidden
-          gem.
-        </p>
+      <div class="gallery-item g-wide">
+        <img
+          src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800&q=80"
+          alt="Mountains"
+          loading="lazy"
+        />
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">
-          <i class="ri-customer-service-2-line"></i>
-        </div>
-        <h3>24/7 Support</h3>
-        <p>
-          Round-the-clock assistance from our dedicated travel concierge team.
-        </p>
+      <div class="gallery-item">
+        <img
+          src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=400&q=80"
+          alt="Forest"
+          loading="lazy"
+        />
       </div>
-      <div class="feature-card">
-        <div class="feature-icon"><i class="ri-price-tag-3-line"></i></div>
-        <h3>Best Price Guarantee</h3>
-        <p>
-          Find a lower price elsewhere? We'll match it — no questions asked.
-        </p>
+      <div class="gallery-item">
+        <img
+          src="https://images.unsplash.com/photo-1433838552652-f9a46b332c40?w=400&q=80"
+          alt="Lake"
+          loading="lazy"
+        />
+      </div>
+      <div class="gallery-item g-wide">
+        <img
+          src="https://images.unsplash.com/photo-1488085061387-422e29b40080?w=800&q=80"
+          alt="Balloons"
+          loading="lazy"
+        />
+      </div>
+      <div class="gallery-item g-tall">
+        <img
+          src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=600&q=80"
+          alt="Camping"
+          loading="lazy"
+        />
+      </div>
+      <div class="gallery-item">
+        <img
+          src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=400&q=80"
+          alt="Sunset"
+          loading="lazy"
+        />
+      </div>
+      <div class="gallery-item">
+        <img
+          src="https://images.unsplash.com/photo-1503220317375-aaad61436b1b?w=400&q=80"
+          alt="Beach"
+          loading="lazy"
+        />
       </div>
     </div>
   </div>
@@ -554,77 +691,6 @@
   </div>
 </section>
 
-<!-- Gallery -->
-<section class="section" id="gallery">
-  <div class="container">
-    <div class="section-header" data-reveal>
-      <div class="section-label">Moments</div>
-      <h2 class="section-title">Travel Gallery</h2>
-      <p class="section-subtitle">
-        A glimpse into the extraordinary moments that await you.
-      </p>
-    </div>
-    <div class="gallery-grid" data-stagger>
-      <div class="gallery-item g-tall">
-        <img
-          src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600&q=80"
-          alt="Valley"
-          loading="lazy"
-        />
-      </div>
-      <div class="gallery-item g-wide">
-        <img
-          src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800&q=80"
-          alt="Mountains"
-          loading="lazy"
-        />
-      </div>
-      <div class="gallery-item">
-        <img
-          src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=400&q=80"
-          alt="Forest"
-          loading="lazy"
-        />
-      </div>
-      <div class="gallery-item">
-        <img
-          src="https://images.unsplash.com/photo-1433838552652-f9a46b332c40?w=400&q=80"
-          alt="Lake"
-          loading="lazy"
-        />
-      </div>
-      <div class="gallery-item g-wide">
-        <img
-          src="https://images.unsplash.com/photo-1488085061387-422e29b40080?w=800&q=80"
-          alt="Balloons"
-          loading="lazy"
-        />
-      </div>
-      <div class="gallery-item g-tall">
-        <img
-          src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=600&q=80"
-          alt="Camping"
-          loading="lazy"
-        />
-      </div>
-      <div class="gallery-item">
-        <img
-          src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=400&q=80"
-          alt="Sunset"
-          loading="lazy"
-        />
-      </div>
-      <div class="gallery-item">
-        <img
-          src="https://images.unsplash.com/photo-1503220317375-aaad61436b1b?w=400&q=80"
-          alt="Beach"
-          loading="lazy"
-        />
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- FAQ -->
 <section class="section" id="faq">
   <div class="container">
@@ -688,23 +754,5 @@
         </div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- Newsletter -->
-<section class="section section-dark">
-  <div class="container newsletter" data-reveal>
-    <div class="section-label">Stay Updated</div>
-    <h2 class="section-title">Get Travel Inspiration</h2>
-    <p class="section-subtitle" style="margin:0 auto 0">
-      Join 12,000+ travelers who receive our weekly curated destination guides.
-    </p>
-    <form
-      class="newsletter-form"
-      on:submit|preventDefault={() => alert("Subscribed! (Demo)")}
-    >
-      <input type="email" placeholder="Enter your email" required />
-      <button class="btn btn-primary" type="submit">Subscribe</button>
-    </form>
   </div>
 </section>
