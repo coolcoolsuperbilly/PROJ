@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import { fade } from "svelte/transition";
   import { teamMembers } from "../../public/data.js";
+  import "./about.css";
 
   onMount(() => {
     if (window.ScrollReveal) window.ScrollReveal().sync();
@@ -37,16 +38,16 @@
       </p>
     </div>
 
-    <div class="team-grid" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 40px; margin-top: 50px;">
+    <div class="team-grid">
       {#each teamMembers as member}
-        <div class="team-member" style="text-align: center; width: 200px;">
+        <div class="team-member">
           <img
             src={member.img}
             alt={member.name}
-            style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin-bottom: 20px; border: 3px solid var(--primary);"
+            class="team-member-img"
           />
-          <h3 style="font-size: 1.2rem; margin-bottom: 5px;">{member.name}</h3>
-          <p style="color: var(--text-muted); font-size: 0.9rem;">
+          <h3 class="team-member-name">{member.name}</h3>
+          <p class="team-member-role">
             {member.role}
           </p>
         </div>

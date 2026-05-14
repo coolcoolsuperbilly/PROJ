@@ -2,13 +2,16 @@
   import { onMount, onDestroy } from "svelte";
   import { fade } from "svelte/transition";
   import { explorePackages, trendingDestinations } from "../../public/data.js";
+  import { fetchTripPlan } from "../utils/api.js";
+  import "./explore.css";
 
-  let activeFilter = "All";
-  function setFilter(f) {
-    activeFilter = f;
+  let currentFilter = "All";
+  function updateFilter(filterName) {
+    currentFilter = filterName;
   }
 
   onMount(() => {
+    // animation things
     requestAnimationFrame(() => {
       const gsap = window.gsap;
       const ST = window.ScrollTrigger;
@@ -45,8 +48,8 @@
   // API Integration
   let searchQuery = "";
   let searchBudget = 50000;
-  let isSearching = false;
-  let searchResults = null;
+  let isLoadingResults = false;
+  let tripPlanData = null;
   let errorMsg = "";
 
   // Timeline Popup
@@ -64,6 +67,13 @@
     document.body.style.overflow = "";
   }
 
+  function handleKeydown(event, data) {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      openTimeline(data);
+    }
+  }
+
   function bookOnBooking(name) {
     window.open(
       `https://www.booking.com/searchresults.html?ss=${encodeURIComponent(name)}`,
@@ -72,31 +82,18 @@
   }
 
   async function handleSearch() {
-    if (!searchQuery.trim()) return;
-    isSearching = true;
+    isLoadingResults = true;
     errorMsg = "";
-    try {
-      const locations = searchQuery
-        .split(",")
-        .map((s) => s.trim())
-        .filter(Boolean);
-      const res = await fetch("https://api.466marys.workers.dev/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ locations, budget: searchBudget }),
-      });
-      const data = await res.json();
-      if (data && data.data) {
-        searchResults = data.data;
-      } else {
-        errorMsg = "Invalid data format received from API.";
-      }
-    } catch (e) {
-      console.error("Search failed:", e);
-      errorMsg = e.message || "Failed to fetch data. Please try again.";
-    } finally {
-      isSearching = false;
+
+    const response = await fetchTripPlan(searchQuery, searchBudget);
+
+    if (response.error) {
+      errorMsg = response.error;
+    } else {
+      tripPlanData = response.data;
     }
+
+    isLoadingResults = false;
   }
 </script>
 
@@ -109,89 +106,89 @@
   />
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <h1 style="padding-top: 15%;">Create Your Own Tour Packages</h1>
-    <p class="hero-label">AI-Powered Trip Planner</p>
-    <p
-      style="color:rgba(255,255,255,.7); margin-bottom: 24px; font-size: 0.95rem;"
-    >
-      Enter destinations and your budget — our AI builds the perfect package for
-      you.
-    </p>
-    <form class="search-bar" on:submit|preventDefault={handleSearch}>
-      <input
-        type="text"
-        bind:value={searchQuery}
-        placeholder="Destinations (e.g. Delhi, Agra, Jaipur)..."
-        style="flex:2;"
-        required
-      />
-      <input
-        type="number"
-        bind:value={searchBudget}
-        placeholder="Budget (₹)"
-        min="5000"
-        style="flex:1; border-left: 1px solid rgba(255,255,255,0.1);"
-        required
-      />
-      <button class="btn btn-primary" type="submit" disabled={isSearching}>
-        {#if isSearching}
-          <i class="ri-loader-4-line spin"></i>
-        {:else}
-          <i class="ri-magic-line"></i>
-        {/if}
-      </button>
-    </form>
-    {#if errorMsg}
-      <div
-        class="error-toast"
-        style="margin-top:16px;padding:12px 20px;background:rgba(255,90,54,.15);color:#ff5a36;border:1px solid rgba(255,90,54,.3);border-radius:14px;font-size:.85rem;display:inline-flex;align-items:center;gap:8px;"
-      >
-        <i class="ri-error-warning-line"></i>
-        {errorMsg}
-      </div>
-    {/if}
+    <div class="hero-content">
+      <h1 class="explore-hero-title">Create Your Own Tour Packages</h1>
+      <p class="hero-label">AI-Powered Trip Planner</p>
+      <p class="explore-hero-desc">
+        Enter destinations and your budget — our AI builds the perfect package
+        for you.
+      </p>
+      <form class="search-bar" on:submit|preventDefault={handleSearch}>
+        <input
+          type="text"
+          bind:value={searchQuery}
+          placeholder="Destinations (e.g. Delhi, Agra, Jaipur)..."
+          class="search-input-dest"
+          required
+        />
+        <input
+          type="number"
+          bind:value={searchBudget}
+          placeholder="Budget (₹)"
+          min="5000"
+          class="search-input-budget"
+          required
+        />
+        <button
+          class="btn btn-primary"
+          type="submit"
+          disabled={isLoadingResults}
+        >
+          {#if isLoadingResults}
+            <i class="ri-loader-4-line spin"></i>
+          {:else}
+            <i class="ri-magic-line"></i>
+          {/if}
+        </button>
+      </form>
+      {#if errorMsg}
+        <div class="search-error">
+          <i class="ri-error-warning-line"></i>
+          {errorMsg}
+        </div>
+      {/if}
+    </div>
   </div>
 </section>
 
 <!-- Results -->
 <section class="section section-dark">
   <div class="container">
-    {#if searchResults}
+    {#if tripPlanData}
       <!-- AI Package Card -->
       <div
         class="ai-pkg"
-        on:click={() => openTimeline(searchResults)}
+        on:click={() => openTimeline(tripPlanData)}
+        on:keydown={(e) => handleKeydown(e, tripPlanData)}
+        role="button"
+        tabindex="0"
         data-reveal
       >
         <div class="ai-pkg-bg">
           <img
-            src={searchResults.locations[0]?.image ||
+            src={tripPlanData.locations[0]?.image ||
               "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1200&q=80"}
             alt="Package"
           />
           <div class="ai-pkg-overlay"></div>
         </div>
         <div class="ai-pkg-body">
-          <span
-            class="pkg-badge"
-            style="position:relative;display:inline-block;margin-bottom:16px;"
-            >AI Generated Package</span
-          >
+          <span class="pkg-badge ai-pkg-badge">AI Generated Package</span>
           <h2>
-            The {searchResults.locations.map((l) => l.name).join(" → ")} Journey
+            The {tripPlanData.locations.map((l) => l.name).join(" → ")} Journey
           </h2>
           <p class="ai-pkg-meta">
-            {searchResults.locations.length} Destinations • Budget:
-            <strong>₹{searchResults.total_cost}</strong>
+            {tripPlanData.locations.length} Destinations • Budget:
+            <strong>₹{tripPlanData.total_cost}</strong>
           </p>
           <div class="ai-pkg-tags">
-            {#each searchResults.locations as loc}
+            {#each tripPlanData.locations as loc}
               <span class="route-tag"
                 ><i class="ri-map-pin-2-fill"></i> {loc.name}</span
               >
             {/each}
-            {#if searchResults.travel}
-              {#each searchResults.travel as t}
+            {#if tripPlanData.travel}
+              {#each tripPlanData.travel as t}
                 <span class="route-tag"
                   ><i class="ri-route-line"></i>
                   {t.from} → {t.to} ({t.type})</span
@@ -199,17 +196,17 @@
               {/each}
             {/if}
           </div>
-          <div style="display:flex;gap:14px;margin-top:28px;flex-wrap:wrap;">
+          <div class="ai-pkg-actions">
             <button
               class="btn btn-primary"
-              on:click|stopPropagation={() => openTimeline(searchResults)}
+              on:click|stopPropagation={() => openTimeline(tripPlanData)}
             >
               <i class="ri-time-line"></i> View Timeline
             </button>
             <button
               class="btn btn-ghost"
               on:click|stopPropagation={() =>
-                bookOnBooking(searchResults.locations[0]?.name || "")}
+                bookOnBooking(tripPlanData.locations[0]?.name || "")}
             >
               Book on Booking.com <i class="ri-external-link-line"></i>
             </button>
@@ -246,8 +243,7 @@
                 >
               </div>
               <button
-                class="btn btn-primary btn-sm"
-                style="width:100%;justify-content:center"
+                class="btn btn-primary btn-sm full-width-btn"
                 on:click={() => bookOnBooking(pkg.loc)}>Book Now</button
               >
             </div>
@@ -349,8 +345,7 @@
                     </div>
                   {/if}
                   <button
-                    class="btn btn-sm btn-outline"
-                    style="padding:6px 12px;font-size:.75rem;margin-top:8px;"
+                    class="btn btn-sm btn-outline timeline-book-btn"
                     on:click|stopPropagation={() => bookOnBooking(loc.name)}
                   >
                     Book on Booking.com
@@ -372,255 +367,3 @@
     </div>
   </div>
 {/if}
-
-<style>
-  .spin {
-    animation: spin 1s linear infinite;
-    display: inline-block;
-  }
-  @keyframes spin {
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  /* AI Package Card */
-  .ai-pkg {
-    position: relative;
-    border-radius: var(--radius);
-    overflow: hidden;
-    min-height: 340px;
-    display: flex;
-    align-items: flex-end;
-    padding: 48px;
-    cursor: pointer;
-    transition:
-      transform 0.3s,
-      box-shadow 0.3s;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-  }
-  .ai-pkg:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5);
-  }
-  .ai-pkg-bg {
-    position: absolute;
-    inset: 0;
-  }
-  .ai-pkg-bg img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .ai-pkg-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      to top,
-      rgba(0, 0, 0, 0.95) 0%,
-      rgba(0, 0, 0, 0.4) 55%,
-      rgba(0, 0, 0, 0.15) 100%
-    );
-  }
-  .ai-pkg-body {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-  }
-  .ai-pkg-body h2 {
-    font-size: clamp(1.6rem, 3.5vw, 2.5rem);
-    color: #fff;
-    font-family: "Outfit";
-    font-weight: 800;
-    margin-bottom: 12px;
-  }
-  .ai-pkg-meta {
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.75);
-    margin-bottom: 16px;
-  }
-  .ai-pkg-tags {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-
-  .route-tags {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-  .route-tag {
-    background: rgba(255, 255, 255, 0.06);
-    padding: 5px 12px;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    color: var(--text-light);
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-  }
-  .route-tag i {
-    color: var(--accent);
-  }
-
-  /* Timeline Modal */
-  .tl-modal {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-  }
-  .tl-backdrop {
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(10px);
-  }
-  .tl-box {
-    position: relative;
-    z-index: 1;
-    background: var(--bg2);
-    width: 100%;
-    max-width: 700px;
-    max-height: 90vh;
-    overflow-y: auto;
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 40px;
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
-  }
-  .tl-close {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    font-size: 1.4rem;
-    color: #fff;
-    background: rgba(255, 255, 255, 0.1);
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
-  .tl-close:hover {
-    background: rgba(255, 255, 255, 0.2);
-  }
-  .tl-header {
-    margin-bottom: 32px;
-    padding-bottom: 24px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  }
-  .tl-header h2 {
-    font-size: 1.8rem;
-    color: #fff;
-    font-family: "Outfit";
-    margin-bottom: 6px;
-  }
-  .tl-cost {
-    color: var(--accent);
-    font-weight: 700;
-    font-size: 1.1rem;
-  }
-  .tl-step {
-    display: flex;
-    gap: 20px;
-  }
-  .tl-node {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 20px;
-  }
-  .tl-dot {
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: var(--accent);
-    border: 3px solid var(--bg2);
-    outline: 2px solid var(--accent);
-    flex-shrink: 0;
-    margin-top: 6px;
-  }
-  .tl-line {
-    width: 2px;
-    background: rgba(255, 255, 255, 0.08);
-    flex-grow: 1;
-    margin-top: 6px;
-  }
-  .tl-info {
-    flex: 1;
-    padding-bottom: 32px;
-  }
-  .tl-info h3 {
-    font-size: 1.15rem;
-    color: #fff;
-    font-family: "Outfit";
-    margin-bottom: 14px;
-  }
-  .tl-card {
-    display: flex;
-    gap: 14px;
-    background: rgba(255, 255, 255, 0.03);
-    padding: 14px;
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-  }
-  .tl-img {
-    width: 90px;
-    height: 90px;
-    border-radius: 8px;
-    object-fit: cover;
-    flex-shrink: 0;
-  }
-  .tl-details {
-    flex: 1;
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.7);
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  .tl-details strong {
-    color: #fff;
-  }
-  .tl-travel {
-    margin-top: 14px;
-    padding: 10px 14px;
-    background: rgba(255, 90, 54, 0.08);
-    border-left: 3px solid var(--accent);
-    border-radius: 0 8px 8px 0;
-    font-size: 0.82rem;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  @media (max-width: 768px) {
-    .ai-pkg {
-      padding: 24px;
-      min-height: 280px;
-    }
-    .ai-pkg-body h2 {
-      font-size: 1.4rem;
-    }
-    .tl-box {
-      padding: 24px;
-    }
-    .tl-card {
-      flex-direction: column;
-    }
-    .tl-img {
-      width: 100%;
-      height: 140px;
-    }
-  }
-</style>

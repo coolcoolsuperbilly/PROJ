@@ -1,0 +1,31 @@
+.team-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 50px;
+}
+
+.team-member {
+  text-align: center;
+  width: 200px;
+}
+
+.team-member-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 20px;
+  border: 3px solid var(--accent); /* Changed from --primary to --accent to match style.css */
+}
+
+.team-member-name {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+}
+
+.team-member-role {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}

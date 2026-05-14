@@ -1,0 +1,27 @@
+.contact-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.contact-card {
+  width: 100%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  padding: 40px;
+  background: var(--surface);
+}
+
+.contact-card h2 {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.contact-textarea {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text);
+  font-family: inherit;
+  resize: vertical;
+}

@@ -123,7 +123,6 @@
             on:click={closeMenu}>Explore</a
           >
         </li>
-        <li><a href="/#destinations" on:click={closeMenu}>Destinations</a></li>
         <li>
           <a
             href="/about"
@@ -187,7 +186,6 @@
           <ul class="footer-links">
             <li><a href="/about">About Us</a></li>
             <li><a href="/explore">Explore</a></li>
-            <li><a href="/destinations">Destinations</a></li>
           </ul>
         </div>
         <div>

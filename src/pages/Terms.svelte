@@ -1,6 +1,7 @@
 <script>
   import { onMount } from "svelte";
   import { fade } from "svelte/transition";
+  import "./document.css";
 
   onMount(() => {
     if (window.ScrollReveal) window.ScrollReveal().sync();
@@ -16,34 +17,30 @@
 </svelte:head>
 
 <section
-  class="explore-hero"
-  style="height: 40vh; min-height: 300px;"
+  class="explore-hero document-hero"
   in:fade={{ duration: 600 }}
 >
-  <div class="hero-overlay" style="background: rgba(0,0,0,0.7)"></div>
+  <div class="hero-overlay document-hero-overlay"></div>
   <div class="hero-content">
-    <h1 class="hero-title" style="padding-top: 10%;">Terms of Service</h1>
+    <h1 class="hero-title document-hero-title">Terms of Service</h1>
     <p class="hero-label">The rules of the Site</p>
   </div>
 </section>
 
 <section class="section">
-  <div
-    class="container"
-    style="max-width: 800px; margin: 0 auto; line-height: 1.8; color: var(--text-muted);"
-  >
-    <h2 style="color: var(--text); margin-bottom: 20px;">
+  <div class="container document-container">
+    <h2 class="document-heading">
       1. Acceptance of Terms
     </h2>
-    <p style="margin-bottom: 20px;">
+    <p class="document-paragraph">
       By accessing and using the Where Next website, you accept and agree to be
       bound by the terms and provision of this agreement. In addition, when
       using these particular services, you shall be subject to any posted
       guidelines or rules applicable to such services.
     </p>
 
-    <h2 style="color: var(--text); margin-bottom: 20px;">2. Governing Law</h2>
-    <p>
+    <h2 class="document-heading">2. Governing Law</h2>
+    <p class="document-paragraph">
       This agreement shall be governed by the laws of India. Any disputes
       arising out of or related to these terms shall be subject to the exclusive
       jurisdiction of the courts located in New Delhi, India.

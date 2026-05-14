@@ -1,98 +1,53 @@
 <script>
   import { onMount, onDestroy } from "svelte";
   import { fade } from "svelte/transition";
-  import { packagesData, topDestinations, galleryImages, testimonials } from "../../public/data.js";
+  import { packagesData, topDestinations, galleryImages, testimonials, heroVideos, spiralImages } from "../../public/data.js";
+  import { initHomeAnimations } from "../utils/animations.js";
+  import "./home.css";
 
-  let triggers = [];
+  let animationTriggers = [];
 
   // ── Video Slideshow ──
-  const heroVideos = [
-    {
-      src: "https://videos.pexels.com/video-files/4316120/4316120-uhd_2560_1440_25fps.mp4",
-      poster:
-        "https://images.unsplash.com/photo-1564507592333-c60657eea523?w=1920&q=80",
-    },
-    {
-      src: "https://videos.pexels.com/video-files/4316236/4316236-uhd_2560_1440_25fps.mp4",
-      poster:
-        "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1920&q=80",
-    },
-    {
-      src: "https://videos.pexels.com/video-files/3629536/3629536-hd_1920_1080_30fps.mp4",
-      poster:
-        "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=1920&q=80",
-    },
-    {
-      src: "https://videos.pexels.com/video-files/4315829/4315829-uhd_2560_1440_25fps.mp4",
-      poster:
-        "https://images.unsplash.com/photo-1477587458883-47145ed94245?w=1920&q=80",
-    },
-  ];
-
-  let currentSlide = 0;
+  let activeVideoIndex = 0;
   let videoRefs = [];
-  let slideTimer;
+  let slideshowTimer;
   let progressTimer;
   let slideProgress = 0;
-  const SLIDE_DURATION = 8000;
+  const SLIDESHOW_DURATION = 8000;
 
   function goToSlide(index) {
-    if (index === currentSlide) return;
-    const prev = currentSlide;
-    currentSlide = index;
+    if (index === activeVideoIndex) return;
+    const previousIndex = activeVideoIndex;
+    activeVideoIndex = index;
     slideProgress = 0;
 
-    if (videoRefs[currentSlide]) {
-      videoRefs[currentSlide].currentTime = 0;
-      videoRefs[currentSlide].play().catch(() => {});
+    if (videoRefs[activeVideoIndex]) {
+      videoRefs[activeVideoIndex].currentTime = 0;
+      videoRefs[activeVideoIndex].play().catch(() => {});
     }
     setTimeout(() => {
-      if (videoRefs[prev]) videoRefs[prev].pause();
+      if (videoRefs[previousIndex]) videoRefs[previousIndex].pause();
     }, 1600);
-    resetTimer();
+    resetSlideshowTimer();
   }
 
-  function advanceSlide() {
-    goToSlide((currentSlide + 1) % heroVideos.length);
+  function playNextVideo() {
+    goToSlide((activeVideoIndex + 1) % heroVideos.length);
   }
 
-  function resetTimer() {
-    clearTimeout(slideTimer);
+  function resetSlideshowTimer() {
+    clearTimeout(slideshowTimer);
     clearInterval(progressTimer);
     slideProgress = 0;
-    const step = 50;
+    const updateInterval = 50;
+    
     progressTimer = setInterval(() => {
-      slideProgress += (step / SLIDE_DURATION) * 100;
+      slideProgress += (updateInterval / SLIDESHOW_DURATION) * 100;
       if (slideProgress >= 100) clearInterval(progressTimer);
-    }, step);
-    slideTimer = setTimeout(advanceSlide, SLIDE_DURATION);
+    }, updateInterval);
+    
+    slideshowTimer = setTimeout(playNextVideo, SLIDESHOW_DURATION);
   }
-
-  const spiralImages = [
-    'https://images.unsplash.com/photo-1564507592333-c60657eea523?w=800&q=80',
-    'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=800&q=80',
-    'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=800&q=80',
-    'https://images.unsplash.com/photo-1599661046289-e31897846e41?w=800&q=80',
-    'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=800&q=80',
-    'https://images.unsplash.com/photo-1561361513-2d000a50f0dc?w=800&q=80',
-    'https://images.unsplash.com/photo-1477587458883-47145ed94245?w=800&q=80',
-    'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=800&q=80',
-    'https://images.unsplash.com/photo-1587478640398-0f2c40c1ceba?w=800&q=80',
-    'https://images.unsplash.com/photo-1514222785106-a8f81536b335?w=800&q=80',
-    'https://images.unsplash.com/photo-1598144249156-f6d3cb20c6a2?w=800&q=80',
-    'https://images.unsplash.com/photo-1590050720235-9dfa86df74f3?w=800&q=80',
-    'https://images.unsplash.com/photo-1600100397608-f010f411c569?w=800&q=80',
-    'https://images.unsplash.com/photo-1571536802807-30451e3955d8?w=800&q=80',
-    'https://images.unsplash.com/photo-1582502693992-ce8474dc25ea?w=800&q=80',
-    'https://images.unsplash.com/photo-1625062402283-9bfa0efd5d21?w=800&q=80',
-    'https://images.unsplash.com/photo-1546875567-27e16a241203?w=800&q=80',
-    'https://images.unsplash.com/photo-1627806509506-6966f3640b8a?w=800&q=80',
-    'https://images.unsplash.com/photo-1598285519890-eec1a4cb99bb?w=800&q=80',
-    'https://images.unsplash.com/photo-1525642838382-b7e51cdeafc7?w=800&q=80',
-    'https://images.unsplash.com/photo-1592652431713-39906d4eeb5c?w=800&q=80',
-    'https://images.unsplash.com/photo-1550231573-0f04fba222bb?w=800&q=80',
-    'https://images.unsplash.com/photo-1568297779-7bd7d1fdf261?w=800&q=80'
-  ];
 
   onMount(() => {
     // Initialize spiral
@@ -100,122 +55,16 @@
 
     // Start video slideshow
     if (videoRefs[0]) videoRefs[0].play().catch(() => {});
-    resetTimer();
+    resetSlideshowTimer();
 
     // Wait a tick for DOM to be ready
     requestAnimationFrame(() => {
       const gsap = window.gsap;
-      const ST = window.ScrollTrigger;
-      if (!gsap || !ST) return;
-      gsap.registerPlugin(ST);
-
-      // Hero fade-up
-      gsap.from(".hero-content > *", {
-        y: 50,
-        opacity: 0,
-        duration: 1.1,
-        stagger: 0.12,
-        ease: "power3.out",
-        delay: 0.2,
-      });
-      gsap.from(".scroll-indicator", {
-        opacity: 0,
-        y: 15,
-        duration: 0.8,
-        delay: 1.2,
-      });
-
-      // Scroll reveals
-      document.querySelectorAll("[data-reveal]").forEach((el) => {
-        const t = gsap.from(el, {
-          y: 40,
-          opacity: 0,
-          duration: 0.9,
-          ease: "power3.out",
-          scrollTrigger: { trigger: el, start: "top 85%" },
-        });
-        triggers.push(t);
-      });
-
-      // Stagger children
-      document.querySelectorAll("[data-stagger]").forEach((c) => {
-        const t = gsap.from(c.children, {
-          y: 50,
-          opacity: 0,
-          duration: 0.7,
-          stagger: 0.08,
-          ease: "power3.out",
-          scrollTrigger: { trigger: c, start: "top 82%" },
-        });
-        triggers.push(t);
-      });
-
-      // Counters
-      document.querySelectorAll(".stat-num").forEach((el) => {
-        const target = parseInt(el.dataset.count) || 0;
-        const suffix = el.dataset.suffix || "";
-        ST.create({
-          trigger: el,
-          start: "top 90%",
-          once: true,
-          onEnter: () => {
-            gsap.to(
-              { v: 0 },
-              {
-                v: target,
-                duration: 2.2,
-                ease: "power2.out",
-                onUpdate: function () {
-                  el.textContent = Math.floor(this.targets()[0].v) + suffix;
-                },
-              },
-            );
-          },
-        });
-      });
-
-      // 3D tilt on dest cards
-      document.querySelectorAll(".dest-card").forEach((card) => {
-        card.addEventListener("mousemove", (e) => {
-          const r = card.getBoundingClientRect();
-          gsap.to(card, {
-            rotateY: ((e.clientX - r.left) / r.width - 0.5) * 8,
-            rotateX: -((e.clientY - r.top) / r.height - 0.5) * 8,
-            transformPerspective: 800,
-            duration: 0.4,
-            ease: "power2.out",
-          });
-        });
-        card.addEventListener("mouseleave", () => {
-          gsap.to(card, {
-            rotateY: 0,
-            rotateX: 0,
-            duration: 0.6,
-            ease: "elastic.out(1,0.4)",
-          });
-        });
-      });
-
-      // Magnetic buttons
-      document.querySelectorAll(".btn-primary, .nav-cta").forEach((btn) => {
-        btn.addEventListener("mousemove", (e) => {
-          const r = btn.getBoundingClientRect();
-          gsap.to(btn, {
-            x: (e.clientX - r.left - r.width / 2) * 0.2,
-            y: (e.clientY - r.top - r.height / 2) * 0.2,
-            duration: 0.3,
-            ease: "power2.out",
-          });
-        });
-        btn.addEventListener("mouseleave", () => {
-          gsap.to(btn, {
-            x: 0,
-            y: 0,
-            duration: 0.5,
-            ease: "elastic.out(1,0.3)",
-          });
-        });
-      });
+      const ScrollTrigger = window.ScrollTrigger;
+      
+      if (gsap && ScrollTrigger) {
+        animationTriggers = initHomeAnimations(gsap, ScrollTrigger);
+      }
 
       // Swiper
       if (window.Swiper) {
@@ -248,9 +97,10 @@
 
   onDestroy(() => {
     if (window.destroySpiral) window.destroySpiral();
-    if (window.ScrollTrigger)
+    if (window.ScrollTrigger) {
       window.ScrollTrigger.getAll().forEach((t) => t.kill());
-    clearTimeout(slideTimer);
+    }
+    clearTimeout(slideshowTimer);
     clearInterval(progressTimer);
   });
 </script>
@@ -261,7 +111,7 @@
     <video
       bind:this={videoRefs[i]}
       class="hero-video"
-      class:hero-video-active={i === currentSlide}
+      class:hero-video-active={i === activeVideoIndex}
       muted
       loop
       playsinline
@@ -292,10 +142,10 @@
     {#each heroVideos as _, i}
       <button
         class="slide-indicator"
-        class:active={i === currentSlide}
+        class:active={i === activeVideoIndex}
         on:click={() => goToSlide(i)}
       >
-        {#if i === currentSlide}
+        {#if i === activeVideoIndex}
           <span class="slide-indicator-fill" style="width: {slideProgress}%"
           ></span>
         {/if}
@@ -313,23 +163,18 @@
 <section
   id="spiral"
   class="section section-dark spiral-section"
-  style="position:relative;padding:0px;height: 100vh; overflow: hidden; display: flex; align-items: center;"
 >
   <div id="webgl-container">
     <canvas id="webgl-canvas"></canvas>
   </div>
-  <div
-    class="container"
-    style="right:0px;position:absolute;z-index:2;pointer-events:none;text-align:right;"
-  >
+  <div class="container spiral-container">
     <div
-      class="section-header"
-      style="background:rgba(0,0,0,0.3);box-shadow:0px 0px 10px 10px rgba(0,0,0,0.3);border-radius:5px;"
+      class="section-header spiral-header"
       data-reveal
     >
       <div class="section-label">Explore Incredible India</div>
       <h2 class="section-title">Discover Endless<br />Wonders</h2>
-      <p style="color: var(--text-muted);line-height: 1.8;">
+      <p class="spiral-text">
         Spin through India's breathtaking landscapes<br /> — from Himalayan peaks
         to tropical shores.
       </p>
@@ -417,10 +262,7 @@
         Hand-crafted itineraries designed for unforgettable experiences.
       </p>
     </div>
-    <div
-      style="display:flex;flex-direction: column;align-items:center;justify-content: center; gap: 15%;"
-      data-stagger
-    >
+    <div class="packages-wrapper" data-stagger>
       <div class="pkg-grid">
         {#each packagesData as pkg}
           <div class="pkg-card">
@@ -444,12 +286,9 @@
           </div>
         {/each}
       </div>
-      <a
-        href="/explore"
-        style="margin-top:20px;max-width:max-content;opacity:1 !important;"
-        class="btn btn-primary btn-sm"
-        >Create Your Own Custom Package <i class="ri-arrow-right-s-line"></i></a
-      >
+      <a href="/explore" class="btn btn-primary btn-sm explore-link">
+        Create Your Own Custom Package <i class="ri-arrow-right-s-line"></i>
+      </a>
     </div>
   </div>
 </section>

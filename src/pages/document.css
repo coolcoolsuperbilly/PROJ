@@ -1,0 +1,28 @@
+.document-hero {
+  height: 40vh;
+  min-height: 300px;
+}
+
+.document-hero-overlay {
+  background: rgba(0,0,0,0.7);
+}
+
+.document-hero-title {
+  padding-top: 10%;
+}
+
+.document-container {
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.8;
+  color: var(--text-muted);
+}
+
+.document-heading {
+  color: var(--text);
+  margin-bottom: 20px;
+}
+
+.document-paragraph {
+  margin-bottom: 20px;
+}

@@ -78,3 +78,48 @@ export const testimonials = [
   { text: `"Best travel service we've ever used for our Kerala houseboat trip. Truly 5-star experience."`, authorImg: "https://i.pravatar.cc/100?img=47", authorName: "Priya Sharma", authorRole: "Kerala, 2026", rating: 5 },
   { text: `"Effortless booking, gorgeous Goa itinerary, and memories for a lifetime."`, authorImg: "https://i.pravatar.cc/100?img=68", authorName: "Vikram Desai", authorRole: "Goa, 2025", rating: 4.5 }
 ];
+
+export const heroVideos = [
+  {
+    src: "https://videos.pexels.com/video-files/4316120/4316120-uhd_2560_1440_25fps.mp4",
+    poster: "https://images.unsplash.com/photo-1564507592333-c60657eea523?w=1920&q=80",
+  },
+  {
+    src: "https://videos.pexels.com/video-files/4316236/4316236-uhd_2560_1440_25fps.mp4",
+    poster: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1920&q=80",
+  },
+  {
+    src: "https://videos.pexels.com/video-files/3629536/3629536-hd_1920_1080_30fps.mp4",
+    poster: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=1920&q=80",
+  },
+  {
+    src: "https://videos.pexels.com/video-files/4315829/4315829-uhd_2560_1440_25fps.mp4",
+    poster: "https://images.unsplash.com/photo-1477587458883-47145ed94245?w=1920&q=80",
+  },
+];
+
+export const spiralImages = [
+  'https://images.unsplash.com/photo-1564507592333-c60657eea523?w=800&q=80',
+  'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=800&q=80',
+  'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=800&q=80',
+  'https://images.unsplash.com/photo-1599661046289-e31897846e41?w=800&q=80',
+  'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=800&q=80',
+  'https://images.unsplash.com/photo-1561361513-2d000a50f0dc?w=800&q=80',
+  'https://images.unsplash.com/photo-1477587458883-47145ed94245?w=800&q=80',
+  'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=800&q=80',
+  'https://images.unsplash.com/photo-1587478640398-0f2c40c1ceba?w=800&q=80',
+  'https://images.unsplash.com/photo-1514222785106-a8f81536b335?w=800&q=80',
+  'https://images.unsplash.com/photo-1598144249156-f6d3cb20c6a2?w=800&q=80',
+  'https://images.unsplash.com/photo-1590050720235-9dfa86df74f3?w=800&q=80',
+  'https://images.unsplash.com/photo-1600100397608-f010f411c569?w=800&q=80',
+  'https://images.unsplash.com/photo-1571536802807-30451e3955d8?w=800&q=80',
+  'https://images.unsplash.com/photo-1582502693992-ce8474dc25ea?w=800&q=80',
+  'https://images.unsplash.com/photo-1625062402283-9bfa0efd5d21?w=800&q=80',
+  'https://images.unsplash.com/photo-1546875567-27e16a241203?w=800&q=80',
+  'https://images.unsplash.com/photo-1627806509506-6966f3640b8a?w=800&q=80',
+  'https://images.unsplash.com/photo-1598285519890-eec1a4cb99bb?w=800&q=80',
+  'https://images.unsplash.com/photo-1525642838382-b7e51cdeafc7?w=800&q=80',
+  'https://images.unsplash.com/photo-1592652431713-39906d4eeb5c?w=800&q=80',
+  'https://images.unsplash.com/photo-1550231573-0f04fba222bb?w=800&q=80',
+  'https://images.unsplash.com/photo-1568297779-7bd7d1fdf261?w=800&q=80'
+];

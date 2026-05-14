@@ -1,6 +1,7 @@
 <script>
   import { onMount } from "svelte";
   import { fade } from "svelte/transition";
+  import "./contact.css";
 
   onMount(() => {
     if (window.ScrollReveal) window.ScrollReveal().sync();
@@ -29,14 +30,9 @@
 </section>
 
 <section class="section" id="contact-form">
-  <div class="container" style="max-width: 600px; margin: 0 auto;">
-    <div
-      class="login-card"
-      style="width:100%; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-radius: 20px; padding: 40px; background: var(--surface);"
-    >
-      <h2 style="margin-bottom: 30px; text-align: center;">
-        Send us a message
-      </h2>
+  <div class="container contact-container">
+    <div class="login-card contact-card">
+      <h2>Send us a message</h2>
       <form
         action="mailto:contact@wherenext.in"
         method="POST"
@@ -66,7 +62,7 @@
             rows="5"
             placeholder="How can we help you?"
             required
-            style="width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 12px; color: var(--text); font-family: inherit; resize: vertical;"
+            class="contact-textarea"
           ></textarea>
         </div>
         <button

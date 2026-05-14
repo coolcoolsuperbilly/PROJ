@@ -1,6 +1,7 @@
 <script>
   import { onMount } from "svelte";
   import { fade } from "svelte/transition";
+  import "./document.css";
 
   onMount(() => {
     if (window.ScrollReveal) window.ScrollReveal().sync();
@@ -16,26 +17,22 @@
 </svelte:head>
 
 <section
-  class="explore-hero"
-  style="height: 40vh; min-height: 300px;"
+  class="explore-hero document-hero"
   in:fade={{ duration: 600 }}
 >
-  <div class="hero-overlay" style="background: rgba(0,0,0,0.7)"></div>
+  <div class="hero-overlay document-hero-overlay"></div>
   <div class="hero-content">
-    <h1 class="hero-title" style="padding-top: 10%;">Privacy Policy</h1>
+    <h1 class="hero-title document-hero-title">Privacy Policy</h1>
     <p class="hero-label">How we handle your data</p>
   </div>
 </section>
 
 <section class="section">
-  <div
-    class="container"
-    style="max-width: 800px; margin: 0 auto; line-height: 1.8; color: var(--text-muted);"
-  >
-    <h2 style="color: var(--text); margin-bottom: 20px;">
+  <div class="container document-container">
+    <h2 class="document-heading">
       1. Information We Collect
     </h2>
-    <p style="margin-bottom: 20px;">
+    <p class="document-paragraph">
       We Dont collect information you provide directly to us, such as when you
       create or modify your account, request on-demand services, contact
       customer support, or otherwise communicate with us. This information may
@@ -44,8 +41,8 @@
       choose to provide.
     </p>
 
-    <h2 style="color: var(--text); margin-bottom: 20px;">2. Contact Us</h2>
-    <p>
+    <h2 class="document-heading">2. Contact Us</h2>
+    <p class="document-paragraph">
       If you have any questions about this Privacy Statement, please contact us.
     </p>
   </div>
