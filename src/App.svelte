@@ -11,6 +11,22 @@
 
   let currentPath = window.location.pathname;
 
+  let user = "";
+
+  function getCookie(name) {
+    const cookies = document.cookie.split("; ");
+
+    for (const cookie of cookies) {
+      const [key, value] = cookie.split("=");
+
+      if (key === name) {
+        return decodeURIComponent(value);
+      }
+    }
+
+    return null;
+  }
+
   // Normalize trailing slashes
   function normalizePath(p) {
     return p === "/" ? "/" : p.replace(/\/$/, "");
@@ -24,6 +40,8 @@
 
   onMount(() => {
     currentPath = normalizePath(window.location.pathname);
+
+    user = getCookie("user") || "";
 
     window.addEventListener("popstate", () => {
       currentPath = normalizePath(window.location.pathname);
@@ -139,7 +157,12 @@
         </li>
       </ul>
       <div class="nav-right">
-        <a href="/login" class="nav-cta">Sign In</a>
+        {#if user}
+          <span class="nav-cta">{user}</span>
+        {:else}
+          <a href="/login" class="nav-cta">Sign In</a>
+        {/if}
+
         <button class="mobile-toggle" on:click={toggleMenu}>
           <i class={menuOpen ? "ri-close-line" : "ri-menu-line"}></i>
         </button>

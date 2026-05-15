@@ -1,7 +1,5 @@
-/* ══════ spiral.js — Auto-Rolling Spiral (Hero Background) ══════ */
 window.initSpiral = function () {
   if (typeof THREE === 'undefined') return;
-  // Cleanup previous instance if re-mounting
   if (window._spiralAnimId) { cancelAnimationFrame(window._spiralAnimId); window._spiralAnimId = null; }
 
   const imageUrls = [
@@ -35,9 +33,8 @@ window.initSpiral = function () {
   let scrollOffset = 0;
   let imageRatios = [];
   let originalPositions = [];
-  const AUTO_SPEED = 0.0003; // Constant auto-scroll speed
+  const AUTO_SPEED = 0.0003;
 
-  // Gentle idle sway
   let time = 0;
 
   const cfg = {
@@ -124,7 +121,7 @@ window.initSpiral = function () {
     if (!box || !cvs) return;
 
     scene = new THREE.Scene();
-    // Transparent background so video shows through!
+    // Transparent background so video shows .
     camera = new THREE.PerspectiveCamera(50, box.clientWidth / box.clientHeight, 0.1, 1000);
     camera.position.set(0, 3.5, 9);
 

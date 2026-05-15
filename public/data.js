@@ -47,11 +47,11 @@ export const trendingDestinations = [
 ];
 
 export const teamMembers = [
-  { name: "Aarav Sharma", role: "Lead Developer", img: "https://i.pravatar.cc/150?img=11" },
-  { name: "Priya Patel", role: "Frontend Engineer", img: "https://i.pravatar.cc/150?img=5" },
-  { name: "Rohan Verma", role: "Backend Developer", img: "https://i.pravatar.cc/150?img=13" },
-  { name: "Neha Singh", role: "UI/UX Designer", img: "https://i.pravatar.cc/150?img=9" },
-  { name: "Vikram Reddy", role: "Full Stack Developer", img: "https://i.pravatar.cc/150?img=15" }
+  { name: "Goutham K", role: "Developer", img: "https://avatars.githubusercontent.com/u/274985612?v=4&size=64" },
+  { name: "Yadhu Krishna", role: "Developer", img: "https://avatars.githubusercontent.com/u/274985617?v=4&size=64" },
+  { name: "Meera Krishna", role: "Developer", img: "https://avatars.githubusercontent.com/u/274985618?v=4&size=64" },
+  { name: "Muhammed Rehan", role: "Developer", img: "https://avatars.githubusercontent.com/u/274985619?v=4&size=64" },
+  { name: "Anandu Manoj", role: "Developer", img: "https://avatars.githubusercontent.com/u/274985611?v=4&size=64" }
 ];
 
 export const topDestinations = [
