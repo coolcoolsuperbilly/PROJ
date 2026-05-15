@@ -1,7 +1,14 @@
 <script>
   import { onMount, onDestroy } from "svelte";
   import { fade } from "svelte/transition";
-  import { packagesData, topDestinations, galleryImages, testimonials, heroVideos, spiralImages } from "../../public/data.js";
+  import {
+    packagesData,
+    topDestinations,
+    galleryImages,
+    testimonials,
+    heroVideos,
+    spiralImages,
+  } from "../../public/data.js";
   import { initHomeAnimations } from "../utils/animations.js";
   import "./home.css";
 
@@ -40,12 +47,12 @@
     clearInterval(progressTimer);
     slideProgress = 0;
     const updateInterval = 50;
-    
+
     progressTimer = setInterval(() => {
       slideProgress += (updateInterval / SLIDESHOW_DURATION) * 100;
       if (slideProgress >= 100) clearInterval(progressTimer);
     }, updateInterval);
-    
+
     slideshowTimer = setTimeout(playNextVideo, SLIDESHOW_DURATION);
   }
 
@@ -61,7 +68,7 @@
     requestAnimationFrame(() => {
       const gsap = window.gsap;
       const ScrollTrigger = window.ScrollTrigger;
-      
+
       if (gsap && ScrollTrigger) {
         animationTriggers = initHomeAnimations(gsap, ScrollTrigger);
       }
@@ -131,7 +138,7 @@
       destinations and unforgettable experiences across India.
     </p>
     <div class="hero-btns">
-      <a href="#spiral" class="btn btn-primary"
+      <a href="/explore" class="btn btn-primary"
         >Start Exploring <i class="ri-arrow-right-line"></i></a
       >
     </div>
@@ -160,18 +167,12 @@
 </section>
 
 <!-- Spiral Showcase Section -->
-<section
-  id="spiral"
-  class="section section-dark spiral-section"
->
+<section id="spiral" class="section section-dark spiral-section">
   <div id="webgl-container">
     <canvas id="webgl-canvas"></canvas>
   </div>
   <div class="container spiral-container">
-    <div
-      class="section-header spiral-header"
-      data-reveal
-    >
+    <div class="section-header spiral-header" data-reveal>
       <div class="section-label">Explore Incredible India</div>
       <h2 class="section-title">Discover Endless<br />Wonders</h2>
       <p class="spiral-text">
@@ -235,14 +236,13 @@
     <div class="dest-grid" data-stagger>
       {#each topDestinations as dest}
         <div class="dest-card">
-          <img
-            src={dest.img}
-            alt={dest.alt}
-            loading="lazy"
-          />
+          <img src={dest.img} alt={dest.alt} loading="lazy" />
           <div class="dest-card-overlay"></div>
           <div class="dest-card-info">
-            <div class="dest-card-rating"><i class="ri-star-fill"></i> {dest.rating}</div>
+            <div class="dest-card-rating">
+              <i class="ri-star-fill"></i>
+              {dest.rating}
+            </div>
             <h3>{dest.title}</h3>
             <p>{dest.desc}</p>
           </div>
@@ -306,11 +306,7 @@
     <div class="gallery-grid" data-stagger>
       {#each galleryImages as img}
         <div class="gallery-item {img.class}">
-          <img
-            src={img.src}
-            alt={img.alt}
-            loading="lazy"
-          />
+          <img src={img.src} alt={img.alt} loading="lazy" />
         </div>
       {/each}
     </div>
@@ -381,8 +377,7 @@
         </div>
         <div class="faq-answer">
           Browse our packages on the Explore page, select your preferred trip,
-          and click "Book Now". You'll be guided through a simple checkout
-          process with secure payment options.
+          and click "Book Now".
         </div>
       </div>
       <div class="faq-item">
@@ -397,16 +392,6 @@
       </div>
       <div class="faq-item">
         <div class="faq-question">
-          <span>What's your cancellation policy?</span><i class="ri-add-line"
-          ></i>
-        </div>
-        <div class="faq-answer">
-          We offer free cancellation up to 30 days before departure.
-          Cancellations within 14-30 days receive a 50% refund.
-        </div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question">
           <span>Are flights included in the packages?</span><i
             class="ri-add-line"
           ></i>
@@ -414,15 +399,6 @@
         <div class="faq-answer">
           Most premium packages include flights. Budget-friendly options may be
           accommodation-only. Each listing clearly states what's included.
-        </div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question">
-          <span>Do you offer group discounts?</span><i class="ri-add-line"></i>
-        </div>
-        <div class="faq-answer">
-          Yes! Groups of 4 or more receive up to 15% off. Contact our team for
-          custom group pricing.
         </div>
       </div>
     </div>
