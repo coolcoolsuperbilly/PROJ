@@ -8,6 +8,7 @@
   import Contact from "./pages/Contact.svelte";
   import Privacy from "./pages/Privacy.svelte";
   import Terms from "./pages/Terms.svelte";
+  import Dashboard from "./pages/Dashboard.svelte";
 
   let currentPath = window.location.pathname;
 
@@ -70,6 +71,7 @@
           "/contact",
           "/privacy",
           "/terms",
+          "/dashboard",
         ].includes(normalizePath(url.pathname))
       ) {
         e.preventDefault();
@@ -85,6 +87,7 @@
   $: isContact = currentPath === "/contact";
   $: isPrivacy = currentPath === "/privacy";
   $: isTerms = currentPath === "/terms";
+  $: isDashboard = currentPath === "/dashboard";
   $: isHome =
     !isLogin && !isExplore && !isAbout && !isContact && !isPrivacy && !isTerms;
 
@@ -101,7 +104,9 @@
             ? "terms"
             : isHome
               ? "home"
-              : "";
+              : isDashboard
+                ? "dashboard"
+                : "";
 
   // Navbar scroll state
   let scrolled = false;
@@ -158,7 +163,7 @@
       </ul>
       <div class="nav-right">
         {#if user}
-          <span class="nav-cta">{user}</span>
+          <a href="/dashboard" class="nav-cta">{user}</a>
         {:else}
           <a href="/login" class="nav-cta">Sign In</a>
         {/if}
@@ -186,6 +191,8 @@
       <Privacy />
     {:else if isTerms}
       <Terms />
+    {:else if isDashboard}
+      <Dashboard />
     {:else}
       <Home />
     {/if}
